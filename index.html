@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Amar Deen - আমার দ্বীন</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #e2e8f0; display: flex; justify-content: center; margin: 0; padding: 0; min-height: 100vh; font-family: 'Hind Siliguri', sans-serif;}
+        #app-container { width: 100%; max-width: 400px; background-color: #f4f5f7; min-height: 100vh; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .icon-box { width: 42px; height: 42px; background: #ffffff; border-radius: 12px; display: flex; justify-content: center; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05); transition: all 0.15s ease; border: 1px solid #f1f5f9; }
+        .cat-item:active .icon-box { transform: scale(0.92); background: #f8fafc; }
+        .icon-box i { font-size: 18px; color: #334155; } 
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <div id="app-container" class="pb-8">
+
+        <header class="flex justify-between items-center px-4 py-2 sticky top-0 z-30 bg-[#f4f5f7]/95 backdrop-blur-md border-b border-gray-200/50">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 bg-[#238968] rounded-[8px] flex justify-center items-center text-white shadow-sm">
+                    <img src="logo.png" alt="Logo" class="w-full h-full object-cover hidden" onerror="this.style.display='none'; document.getElementById('dLogo').style.display='block';">
+                    <i id="dLogo" class="fa-solid fa-kaaba text-[12px]"></i>
+                </div>
+                <h1 class="text-[17px] font-bold tracking-tight text-slate-800 leading-none mt-1">Amar Deen</h1>
+            </div>
+            <div class="flex items-center gap-1">
+                <button class="w-8 h-8 flex justify-center items-center text-slate-500"><i class="fa-solid fa-bars text-[15px]"></i></button>
+            </div>
+        </header>
+
+        <main class="px-4 mt-3 space-y-3.5">
+
+            <section class="bg-white rounded-[14px] p-3 shadow-sm border border-gray-100 flex justify-between items-center relative gap-3 cursor-pointer" onclick="window.location.href='prayer-times.html'">
+                <div class="flex flex-col flex-1 border-r border-gray-100 pr-2">
+                    <span class="text-[10px] text-gray-500 font-medium mb-0.5">পরবর্তী নামাজ:</span>
+                    <div class="flex items-baseline gap-1.5 flex-wrap">
+                        <span id="nextPrayerName" class="text-[15px] font-bold text-slate-800 leading-none">--</span>
+                        <span id="nextPrayerTime" class="text-[12px] font-mono font-semibold text-[#238968]">--:--</span>
+                    </div>
+                    <div class="text-[10px] font-medium text-gray-400 mt-1">বাকি: <span id="countdown" class="font-mono font-bold text-[#238968]">--:--:--</span></div>
+                </div>
+                <div class="flex flex-col items-end gap-1.5 shrink-0">
+                    <span class="text-[11px] font-semibold text-slate-700 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
+                        <i class="fa-solid fa-location-dot text-[9px] text-[#238968]"></i> Dhaka
+                    </span>
+                </div>
+            </section>
+
+            <section class="bg-white border border-gray-100 rounded-[16px] p-4 shadow-sm relative">
+                <div class="grid grid-cols-4 gap-y-4 gap-x-2">
+                    <a href="quran.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-book-quran"></i></div><span class="text-[10px] font-medium text-gray-700 text-center">আল কুরআন</span></a>
+                    <a href="hadith.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-book-open"></i></div><span class="text-[10px] font-medium text-gray-700 text-center">হাদিস</span></a>
+                    <a href="prayer-times.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-clock"></i></div><span class="text-[10px] font-medium text-gray-700 text-center">সময়সূচী</span></a>
+                    <a href="asmaul-husna.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-star-and-crescent"></i></div><span class="text-[10px] font-medium text-gray-700 text-center">আসমাউল হুসনা</span></a>
+                    </div>
+            </section>
+
+            <section class="bg-[#1b6b5c] rounded-[16px] p-3 shadow-md text-white relative cursor-pointer" onclick="window.location.href='asmaul-husna.html'">
+                <div class="flex items-center gap-2 mb-2 border-b border-white/10 pb-1.5">
+                    <i class="fa-solid fa-book-open-reader text-[10px] text-green-200"></i>
+                    <h3 class="text-[12px] font-semibold text-green-50 tracking-wide">আসমাউল হুসনা (৯৯ নাম)</h3>
+                </div>
+                <div class="flex items-center justify-between w-full pt-1">
+                    <div class="flex flex-col min-h-[46px] justify-center transition-opacity duration-300" id="husnaDisplay">
+                        <div class="flex items-end gap-2 flex-wrap mb-1">
+                            <span class="text-[22px] font-arabic font-bold" id="ahArabic">الله</span>
+                            <span class="text-[14px] font-bold" id="ahBangla">আল্লাহ</span>
+                            <span class="text-[9px] text-green-200 ml-1 font-mono bg-black/20 px-1.5 py-0.5 rounded" id="ahCounter">1/99</span>
+                        </div>
+                        <div class="text-[10px] text-green-50 opacity-90 truncate max-w-[180px]" id="ahMeaning">The Greatest Name</div>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <button onclick="event.stopPropagation(); prevName()" class="w-7 h-7 flex justify-center items-center bg-white/10 rounded-full"><i class="fa-solid fa-backward-step text-[10px]"></i></button>
+                        <button onclick="event.stopPropagation(); toggleAudio()" class="w-9 h-9 bg-white text-[#1b6b5c] rounded-full flex justify-center items-center"><i id="playIcon" class="fa-solid fa-play text-[12px] ml-0.5"></i></button>
+                        <button onclick="event.stopPropagation(); nextName()" class="w-7 h-7 flex justify-center items-center bg-white/10 rounded-full"><i class="fa-solid fa-forward-step text-[10px]"></i></button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
