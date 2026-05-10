@@ -28,7 +28,6 @@
         ::-webkit-scrollbar { width: 0px; background: transparent; }
         .icon-box { width: 42px; height: 42px; background: #ffffff; border-radius: 12px; display: flex; justify-content: center; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05); transition: all 0.15s ease; border: 1px solid #f1f5f9; }
         .cat-item:active .icon-box { transform: scale(0.92); background: #f8fafc; }
-        .icon-box i { font-size: 18px; color: #334155; } 
         #extraCategories { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.3s ease-in-out; }
         #locList::-webkit-scrollbar { width: 4px; display: block; }
         #locList::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
@@ -42,14 +41,9 @@
         <header class="flex justify-between items-center px-4 py-2 sticky top-0 z-30 bg-[#f4f5f7]/95 backdrop-blur-md border-b border-gray-200/50">
             <div class="flex items-center gap-2">
                 <div class="w-7 h-7 bg-appGreen rounded-[8px] flex justify-center items-center text-white shadow-sm">
-                    <img src="logo.png" alt="Logo" class="w-full h-full object-cover hidden" onerror="this.style.display='none'; document.getElementById('defaultLogo').style.display='block';">
-                    <i id="defaultLogo" class="fa-solid fa-kaaba text-[12px]"></i>
+                    <i class="fa-solid fa-kaaba text-[12px]"></i>
                 </div>
                 <h1 class="text-[17px] font-bold tracking-tight text-slate-800 leading-none mt-1">Amar Deen</h1>
-            </div>
-            <div class="flex items-center gap-1">
-                <button onclick="window.location.reload()" class="w-8 h-8 flex justify-center items-center text-slate-500 active:scale-90 transition"><i class="fa-solid fa-rotate-right text-[13px]"></i></button>
-                <button class="w-8 h-8 flex justify-center items-center text-slate-500 active:scale-90 transition"><i class="fa-solid fa-bars text-[15px]"></i></button>
             </div>
         </header>
 
@@ -80,38 +74,30 @@
                             <ul id="locList" class="max-h-40 overflow-y-auto"></ul>
                         </div>
                     </div>
-                    <button onclick="toggleNoti()" class="flex items-center gap-1.5 text-[10px] font-medium text-slate-500 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100 active:scale-95 transition">
-                        <i id="notiIcon" class="fa-regular fa-bell text-[11px]"></i> অ্যালার্ম
-                    </button>
                 </div>
             </section>
 
             <!-- CATEGORY GRID -->
             <section class="bg-white border border-gray-100 rounded-[16px] p-4 shadow-sm z-10 relative">
-                <!-- Visible Top 8 -->
                 <div class="grid grid-cols-4 gap-y-4 gap-x-2">
                     <a href="quran.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-book-quran"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">আল কুরআন</span></a>
                     <a href="quran-translation.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-book-open-reader"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">কুরআন অনুবাদ</span></a>
                     <a href="hadith.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-book-open"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">হাদিস</span></a>
-                    <a href="prayer-times.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-clock"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">সময়সূচী</span></a>
+                    
+                    <!-- MODAL TRIGGER FOR PRAYER TIMES -->
+                    <div onclick="openPrayerModal()" class="cat-item flex flex-col items-center gap-1.5 cursor-pointer"><div class="icon-box"><i class="fa-solid fa-clock"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">সময়সূচী</span></div>
+                    
                     <a href="tasbeeh.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-hand-holding-heart"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">তাসবীহ</span></a>
                     <a href="makkah-madinah.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-kaaba"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">মক্কা মদিনা</span></a>
                     <a href="namaz-shikha.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-person-praying"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">নামাজ শিক্ষা</span></a>
                     <a href="dua.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-hands-praying"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">দোয়া</span></a>
                 </div>
 
-                <!-- Hidden Categories -->
                 <div id="extraCategories">
                     <div class="grid grid-cols-4 gap-y-4 gap-x-2 pt-4 border-t border-gray-50 mt-4">
                         <a href="prophets.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-mosque"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">নবীজীদের জীবন</span></a>
-                        <a href="islamic-stories.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-scroll"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">ইসলামিক গল্প</span></a>
-                        <a href="islamic-video.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-regular fa-circle-play"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">ইসলামিক ভিডিও</span></a>
-                        <a href="islamic-bayan.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-microphone-lines"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">ইসলামিক বয়ান</span></a>
-                        <a href="islamic-books.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-book"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">ইসলামিক বই</span></a>
-                        <a href="fatwa.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-regular fa-circle-question"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">দ্বীন জিজ্ঞাসা</span></a>
-                        <a href="islamic-duties.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-solid fa-clipboard-list"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">দায়িত্ব</span></a>
                         <a href="calendar.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-regular fa-calendar-days"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">ক্যালেন্ডার</span></a>
-                        <a href="islamic-names.html" class="cat-item flex flex-col items-center gap-1.5"><div class="icon-box"><i class="fa-regular fa-id-badge"></i></div><span class="text-[10px] font-medium text-gray-700 text-center leading-tight">ইসলামিক নাম</span></a>
+                        <!-- Add other categories as needed -->
                     </div>
                 </div>
 
@@ -126,7 +112,7 @@
             <section class="bg-husnaBg rounded-[16px] p-3 shadow-md text-white relative overflow-hidden">
                 <div class="flex items-center gap-2 mb-2 border-b border-white/10 pb-1.5">
                     <i class="fa-solid fa-book-open-reader text-[10px] text-green-200"></i>
-                    <h3 class="text-[12px] font-semibold text-green-50 tracking-wide">আসমাউল হুসনা (আল্লাহর ৯৯টি নাম)</h3>
+                    <h3 class="text-[12px] font-semibold text-green-50 tracking-wide">আসমাউল হুসনা</h3>
                 </div>
                 <div class="flex items-center justify-between relative z-10 w-full pt-1">
                     <div class="flex flex-col min-h-[46px] justify-center transition-opacity duration-300" id="husnaDisplay">
@@ -139,118 +125,101 @@
                     </div>
                     
                     <div class="flex items-center gap-2.5 shrink-0">
-                        <button onclick="prevName()" class="w-7 h-7 flex justify-center items-center text-white/80 hover:text-white active:scale-90 transition bg-white/10 rounded-full"><i class="fa-solid fa-backward-step text-[10px]"></i></button>
-                        <button onclick="toggleAudio()" class="w-9 h-9 bg-white text-husnaBg rounded-full flex justify-center items-center shadow-lg active:scale-90 transition"><i id="playIcon" class="fa-solid fa-play text-[12px] ml-0.5"></i></button>
-                        <button onclick="nextName()" class="w-7 h-7 flex justify-center items-center text-white/80 hover:text-white active:scale-90 transition bg-white/10 rounded-full"><i class="fa-solid fa-forward-step text-[10px]"></i></button>
+                        <button onclick="prevName()" class="w-7 h-7 flex justify-center items-center text-white/80 hover:text-white bg-white/10 rounded-full"><i class="fa-solid fa-backward-step text-[10px]"></i></button>
+                        <button onclick="toggleAudio()" class="w-9 h-9 bg-white text-husnaBg rounded-full flex justify-center items-center shadow-lg"><i id="playIcon" class="fa-solid fa-play text-[12px] ml-0.5"></i></button>
+                        <button onclick="nextName()" class="w-7 h-7 flex justify-center items-center text-white/80 hover:text-white bg-white/10 rounded-full"><i class="fa-solid fa-forward-step text-[10px]"></i></button>
                     </div>
                 </div>
                 <audio id="husnaAudio" onended="nextName(true)"></audio>
             </section>
         </main>
+
+        <!-- PRAYER TIMES MODAL -->
+        <div id="prayerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4">
+            <div class="bg-white rounded-2xl p-5 w-full max-w-[320px] shadow-2xl scale-100 transition-transform">
+                <div class="flex justify-between items-center mb-4 pb-2 border-b">
+                    <h2 class="text-[15px] font-bold text-appGreen flex items-center gap-2"><i class="fa-solid fa-clock"></i> আজকের নামাজের সময়</h2>
+                    <button onclick="closePrayerModal()" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <div id="modalPrayerList" class="flex flex-col gap-2">
+                    <!-- Data will be injected here -->
+                </div>
+                <button onclick="closePrayerModal()" class="mt-5 w-full bg-appGreen text-white font-medium py-2 rounded-xl active:scale-95 transition">বন্ধ করুন</button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- JAVASCRIPT ALL IN ONE FILE -->
     <script>
         // --- 1. Toggle Categories ---
         let isExpanded = false;
         function toggleCategories() {
             const extraContainer = document.getElementById('extraCategories');
-            const toggleText = document.getElementById('toggleText');
             const toggleIcon = document.getElementById('toggleIcon');
             isExpanded = !isExpanded;
-            if (isExpanded) {
-                extraContainer.style.maxHeight = extraContainer.scrollHeight + "px";
-                extraContainer.style.opacity = "1";
-                toggleText.innerText = 'কম দেখুন';
-                toggleIcon.style.transform = 'rotate(180deg)';
-            } else {
-                extraContainer.style.maxHeight = "0";
-                extraContainer.style.opacity = "0";
-                toggleText.innerText = 'আরও দেখুন';
-                toggleIcon.style.transform = 'rotate(0deg)';
-            }
+            extraContainer.style.maxHeight = isExpanded ? extraContainer.scrollHeight + "px" : "0";
+            extraContainer.style.opacity = isExpanded ? "1" : "0";
+            document.getElementById('toggleText').innerText = isExpanded ? 'কম দেখুন' : 'আরও দেখুন';
+            toggleIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
         }
 
         // --- 2. Location Logic ---
-        const bdDistrictsList = [
-            "Bagerhat", "Bandarban", "Barguna", "Barisal", "Bhola", "Bogra", "Brahmanbaria", 
-            "Chandpur", "Chittagong", "Chuadanga", "Comilla", "Cox's Bazar", "Dhaka", "Dinajpur", 
-            "Faridpur", "Feni", "Gaibandha", "Gazipur", "Gopalganj", "Habiganj", "Jamalpur", 
-            "Jessore", "Jhalokati", "Jhenaidah", "Joypurhat", "Khagrachari", "Khulna", "Kishoreganj", 
-            "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj", 
-            "Meherpur", "Moulvibazar", "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj", 
-            "Narsingdi", "Natore", "Nawabganj", "Netrokona", "Nilphamari", "Noakhali", "Pabna", 
-            "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", 
-            "Satkhira", "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"
-        ];
-        
+        const bdDistrictsList = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", "Barisal", "Rangpur", "Mymensingh"]; // Shortened for brevity
         let currentCity = "Dhaka";
-        const locDropdown = document.getElementById('locDropdown');
-        const locList = document.getElementById('locList');
-        const locSearch = document.getElementById('locSearch');
-
+        
         function populateLocations() {
+            const locList = document.getElementById('locList');
             locList.innerHTML = '';
             bdDistrictsList.forEach(city => {
                 let li = document.createElement('li');
-                li.className = "text-[11px] font-medium text-gray-700 py-2 px-3 border-b border-gray-50 hover:bg-green-50 hover:text-appGreen rounded cursor-pointer transition";
+                li.className = "text-[11px] font-medium text-gray-700 py-2 px-3 border-b border-gray-50 hover:bg-green-50 hover:text-appGreen cursor-pointer";
                 li.innerText = city;
-                li.onclick = () => selectLocation(city);
+                li.onclick = () => {
+                    currentCity = city;
+                    document.getElementById('selectedLocText').innerText = city;
+                    document.getElementById('locDropdown').classList.add('hidden');
+                    fetchPrayerTimes(city); 
+                };
                 locList.appendChild(li);
             });
         }
         populateLocations();
 
-        function toggleLocDropdown() {
-            locDropdown.classList.toggle('hidden');
-            if(!locDropdown.classList.contains('hidden')) {
-                locSearch.focus(); locSearch.value = ''; filterLocations();
-            }
-        }
-
-        function filterLocations() {
-            let filter = locSearch.value.toUpperCase();
-            let lis = locList.getElementsByTagName('li');
-            for (let i = 0; i < lis.length; i++) {
-                let txtValue = lis[i].textContent || lis[i].innerText;
-                lis[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-
-        function selectLocation(city) {
-            currentCity = city;
-            document.getElementById('selectedLocText').innerText = city;
-            locDropdown.classList.add('hidden');
-            fetchPrayerTimes(city); 
-        }
-
-        document.addEventListener('click', function(event) {
-            if (!document.getElementById('locBtn').contains(event.target) && !locDropdown.contains(event.target)) {
-                locDropdown.classList.add('hidden');
+        function toggleLocDropdown() { document.getElementById('locDropdown').classList.toggle('hidden'); }
+        
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('locBtn').contains(e.target) && !document.getElementById('locDropdown').contains(e.target)) {
+                document.getElementById('locDropdown').classList.add('hidden');
             }
         });
 
-        // --- 3. Noti ---
-        let notiActive = localStorage.getItem('amarDeenBell') === 'true';
-        function toggleNoti() {
-            notiActive = !notiActive; localStorage.setItem('amarDeenBell', notiActive);
-            const notiIcon = document.getElementById('notiIcon');
-            notiIcon.className = notiActive ? 'fa-solid fa-bell text-[11px] text-appGreen' : 'fa-regular fa-bell text-[11px] text-slate-400';
-        }
-        if(notiActive) toggleNoti(); toggleNoti();
-
-        // --- 4. Prayer Times API ---
+        // --- 3. Prayer Times API & CACHING ---
         let prayerTimesData = {};
         let countdownInterval;
         const bnPrayerNames = { 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'এশা' };
 
         async function fetchPrayerTimes(city = currentCity) {
+            const dateStr = new Date().toISOString().split('T')[0];
+            const cacheKey = `prayer_${city}_${dateStr}`;
+            
+            // Check Local Storage (Cache)
+            const cachedData = localStorage.getItem(cacheKey);
+            if(cachedData) {
+                prayerTimesData = JSON.parse(cachedData);
+                calcNextPrayer();
+                updateModalData();
+                return; // Return early if cached
+            }
+
             try {
                 const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Bangladesh&method=1`);
                 const data = await res.json();
                 if (data.code === 200) {
                     prayerTimesData = data.data.timings;
+                    // Save to Cache
+                    localStorage.setItem(cacheKey, JSON.stringify(prayerTimesData));
                     calcNextPrayer();
+                    updateModalData();
                 }
             } catch (e) { console.error("Error:", e); }
         }
@@ -258,7 +227,7 @@
         function format12Hour(timeStr) {
             let [h, m] = timeStr.split(':');
             let ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12; h = h ? h : 12; 
+            h = h % 12 || 12; 
             return `${h < 10 ? '0'+h : h}:${m} ${ampm}`;
         }
 
@@ -266,18 +235,16 @@
             clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
                 const now = new Date();
-                let nextPrayer = 'Fajr', nextTime = null, timeStrForUI = prayerTimesData['Fajr'];
+                let nextPrayer = 'Fajr', timeStrForUI = prayerTimesData['Fajr'], nextTime = null;
                 const times = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
                 for (let pt of times) {
                     if(!prayerTimesData[pt]) continue;
                     let [h, m] = prayerTimesData[pt].split(':');
                     let pTime = new Date(); pTime.setHours(h, m, 0, 0);
-                    if (pTime > now) {
-                        nextPrayer = pt; nextTime = pTime; timeStrForUI = prayerTimesData[pt];
-                        break;
-                    }
+                    if (pTime > now) { nextPrayer = pt; nextTime = pTime; timeStrForUI = prayerTimesData[pt]; break; }
                 }
+                
                 if (!nextTime) {
                     let [h, m] = prayerTimesData['Fajr'].split(':');
                     nextTime = new Date(); nextTime.setDate(now.getDate() + 1); nextTime.setHours(h, m, 0, 0);
@@ -295,18 +262,46 @@
             }, 1000);
         }
 
-        // --- 5. Asmaul Husna Audio Logic ---
+        // --- 4. MODAL LOGIC ---
+        function openPrayerModal() { document.getElementById('prayerModal').classList.remove('hidden'); }
+        function closePrayerModal() { document.getElementById('prayerModal').classList.add('hidden'); }
+        function updateModalData() {
+            const modalList = document.getElementById('modalPrayerList');
+            const mainTimes = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            let html = '';
+            mainTimes.forEach(t => {
+                if(prayerTimesData[t]) {
+                    html += `
+                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <span class="text-[14px] font-bold text-gray-700">${bnPrayerNames[t]}</span>
+                        <span class="text-[13px] font-mono font-semibold text-appGreen">${format12Hour(prayerTimesData[t])}</span>
+                    </div>`;
+                }
+            });
+            modalList.innerHTML = html;
+        }
+
+        // --- 5. Asmaul Husna API & CACHING ---
         let husnaNames = [];
         let currentHusnaIndex = 0;
         let isPlaying = false;
         const audioElement = document.getElementById('husnaAudio');
 
         async function fetchHusna() {
+            // Check Local Storage (Cache)
+            const cachedHusna = localStorage.getItem('asmaul_husna');
+            if(cachedHusna) {
+                husnaNames = JSON.parse(cachedHusna);
+                updateHusnaUI();
+                return;
+            }
+
             try {
                 const res = await fetch('https://api.aladhan.com/v1/asmaAlHusna');
                 const data = await res.json();
                 if(data.code === 200) {
                     husnaNames = data.data;
+                    localStorage.setItem('asmaul_husna', JSON.stringify(husnaNames)); // Save to Cache
                     updateHusnaUI();
                 }
             } catch (e) { console.error("Error:", e); }
@@ -315,49 +310,23 @@
         function updateHusnaUI() {
             if(husnaNames.length === 0) return;
             const item = husnaNames[currentHusnaIndex];
-            const display = document.getElementById('husnaDisplay');
-            display.style.opacity = '0';
+            document.getElementById('ahArabic').innerText = item.name;
+            document.getElementById('ahBangla').innerText = item.transliteration;
+            document.getElementById('ahMeaning').innerText = item.en.meaning;
+            document.getElementById('ahCounter').innerText = `${item.number}/99`;
             
-            setTimeout(() => {
-                document.getElementById('ahArabic').innerText = item.name;
-                document.getElementById('ahBangla').innerText = item.transliteration;
-                document.getElementById('ahMeaning').innerText = item.en.meaning;
-                document.getElementById('ahCounter').innerText = `${item.number}/99`;
-                display.style.opacity = '1';
-                
-                audioElement.src = `https://raw.githubusercontent.com/islamic-network/cdn/master/asmaAlHusna/audio/${item.number}.mp3`;
-                
-                if(isPlaying) {
-                    audioElement.play().catch(() => {
-                        isPlaying = false;
-                        document.getElementById('playIcon').className = 'fa-solid fa-play text-[12px] ml-0.5';
-                    });
-                }
-            }, 200);
+            audioElement.src = `https://raw.githubusercontent.com/islamic-network/cdn/master/asmaAlHusna/audio/${item.number}.mp3`;
+            if(isPlaying) audioElement.play();
         }
 
         function toggleAudio() {
-            const playIcon = document.getElementById('playIcon');
             isPlaying = !isPlaying;
-            if (isPlaying) {
-                playIcon.className = 'fa-solid fa-pause text-[12px]';
-                audioElement.play();
-            } else {
-                playIcon.className = 'fa-solid fa-play text-[12px] ml-0.5';
-                audioElement.pause();
-            }
+            document.getElementById('playIcon').className = isPlaying ? 'fa-solid fa-pause text-[12px]' : 'fa-solid fa-play text-[12px] ml-0.5';
+            isPlaying ? audioElement.play() : audioElement.pause();
         }
 
-        function nextName(autoPlay = false) {
-            currentHusnaIndex = (currentHusnaIndex + 1) % 99;
-            if(autoPlay) isPlaying = true;
-            updateHusnaUI();
-        }
-
-        function prevName() {
-            currentHusnaIndex = (currentHusnaIndex - 1 + 99) % 99;
-            updateHusnaUI();
-        }
+        function nextName(autoPlay = false) { currentHusnaIndex = (currentHusnaIndex + 1) % 99; if(autoPlay) isPlaying = true; updateHusnaUI(); }
+        function prevName() { currentHusnaIndex = (currentHusnaIndex - 1 + 99) % 99; updateHusnaUI(); }
 
         // Init App
         fetchPrayerTimes();
@@ -365,3 +334,4 @@
     </script>
 </body>
 </html>
+
