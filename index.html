@@ -160,6 +160,45 @@
                     </button>
                 </div>
             </section>
+
+            <!-- MODERN ASMAUL HUSNA PLAYER (Pixel Style) -->
+            <section class="bg-white border border-slate-100 rounded-[16px] shadow-sm z-10 relative overflow-hidden flex flex-col">
+                <div class="flex items-center w-full">
+                    <!-- Left Clickable Area (Now an anchor tag to ensure proper navigation) -->
+                    <a href="asmaul-husna.html" class="flex items-center gap-2.5 py-3 px-3 cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition-colors" style="width: 45%;">
+                        <div class="w-9 h-9 bg-slate-50 border border-slate-100 rounded-full flex justify-center items-center text-appGreen shrink-0">
+                            <i class="fa-solid fa-book-open-reader text-[13px]"></i>
+                        </div>
+                        <div class="flex flex-col truncate">
+                            <span class="text-[12px] font-bold text-slate-800 leading-tight truncate">আসমাউল হুসনা</span>
+                            <span class="text-[9px] font-medium text-slate-500 mt-0.5 truncate">আল্লাহর ৯৯টি নাম</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Right Player Area (Controls only, takes more space) -->
+                    <div class="flex items-center justify-end gap-1 flex-1 pr-3 py-3">
+                        <button onclick="skipPlayerAudio(-5)" class="w-8 h-8 flex justify-center items-center text-slate-400 hover:text-slate-800 bg-transparent rounded-full active:scale-90 transition">
+                            <i class="fa-solid fa-backward-step text-[11px]"></i>
+                        </button>
+                        
+                        <button onclick="togglePlayerAudio()" class="w-10 h-10 bg-slate-800 text-white rounded-full flex justify-center items-center shadow-md active:scale-90 transition hover:bg-slate-700">
+                            <i id="playerPlayIcon" class="fa-solid fa-play text-[12px] ml-0.5"></i>
+                        </button>
+                        
+                        <button onclick="skipPlayerAudio(5)" class="w-8 h-8 flex justify-center items-center text-slate-400 hover:text-slate-800 bg-transparent rounded-full active:scale-90 transition">
+                            <i class="fa-solid fa-forward-step text-[11px]"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sleek Bottom Progress Bar -->
+                <div class="w-full bg-slate-100 h-1">
+                    <div id="playerProgressBar" class="bg-slate-800 h-full w-0 transition-all duration-300 rounded-r-full"></div>
+                </div>
+                
+                <!-- standard HTML audio tag reading directly from the root folder -->
+                <audio id="asmaulAudioPlayer" src="99names.mp3"></audio> 
+            </section>
         </main>
 
         <!-- PRAYER MODAL -->
@@ -278,7 +317,7 @@
 
         async function toggleNoti() {
             if (!notiActive) {
-                if (!("Notification" in window)) return alert("আপনার ব্রাউজার নোটিফিকেশন সাপোর্ট করে না।");
+                if (!("Notification" in window)) return alert("আপনার ব্রাউজার নোটিফিকেশন সাপোর্ট করে ঘৃণা করে।");
                 const perm = await Notification.requestPermission();
                 if (perm === "granted") notiActive = true;
                 else return alert("অ্যালার্ম পেতে ব্রাউজারের সেটিংস থেকে পারমিশন দিন।");
@@ -385,6 +424,36 @@
             });
             modalList.innerHTML = html;
         }
+
+        // 7. COMPACT PLAYER LOGIC
+        const audioEl = document.getElementById('asmaulAudioPlayer');
+        const playIcon = document.getElementById('playerPlayIcon');
+        const progressBar = document.getElementById('playerProgressBar');
+
+        function togglePlayerAudio() {
+            if (audioEl.paused) {
+                audioEl.play().catch(e => console.log("Audio play blocked", e));
+                playIcon.className = 'fa-solid fa-pause text-[12px]';
+            } else {
+                audioEl.pause();
+                playIcon.className = 'fa-solid fa-play text-[12px] ml-0.5';
+            }
+        }
+
+        function skipPlayerAudio(seconds) {
+            audioEl.currentTime += seconds;
+        }
+
+        audioEl.addEventListener('timeupdate', () => {
+            const progress = (audioEl.currentTime / audioEl.duration) * 100;
+            progressBar.style.width = (progress || 0) + '%';
+        });
+
+        audioEl.addEventListener('ended', () => {
+            playIcon.className = 'fa-solid fa-play text-[12px] ml-0.5';
+            progressBar.style.width = '0%';
+            audioEl.currentTime = 0;
+        });
 
         window.addEventListener('DOMContentLoaded', () => { initLocation(); updateNotiUI(); fetchPrayerTimes(); });
     </script>
