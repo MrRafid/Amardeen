@@ -3,31 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1b6b5c">
+    <meta name="theme-color" content="#f8fafc">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Amar Deen - আমার দ্বীন</title>
     
-    <!-- Preconnect -->
+    <!-- Preconnect for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Bangla Font (Hind Siliguri) & Arabic Font (Amiri) -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bangla Font (Hind Siliguri) -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 
-                        sans: ['"Hind Siliguri"', 'sans-serif'],
-                        arabic: ['"Amiri"', 'serif']
-                    },
-                    colors: { 
-                        appGreen: '#1b6b5c', appGreenLight: '#238968', husnaBg: '#134e43' 
-                    }
+                    fontFamily: { sans: ['"Hind Siliguri"', 'sans-serif'] },
+                    colors: { appGreen: '#1b6b5c', appGreenLight: '#238968' }
                 }
             }
         }
@@ -42,6 +40,7 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
+        /* Desktop Preview Optimization */
         @media (min-width: 450px) {
             body { align-items: center; padding: 15px 0; }
             #app-container { min-height: 92vh; height: 92vh; border-radius: 20px; overflow-y: auto; border: 4px solid #cbd5e1; }
@@ -49,7 +48,7 @@
 
         /* Minimal Scrollbar */
         ::-webkit-scrollbar { width: 0px; background: transparent; }
-        #app-container::-webkit-scrollbar { width: 3px; }
+        #app-container::-webkit-scrollbar { width: 4px; }
         #app-container::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
         
         /* Monochrome Category Icons */
@@ -78,6 +77,7 @@
                 <h1 class="text-[15px] font-bold tracking-tight text-slate-800 mt-0.5">Amar Deen</h1>
             </div>
             <div class="flex items-center gap-1">
+                <!-- App Install Button (Dynamic) -->
                 <button id="installBtn" class="hidden items-center gap-1 bg-green-50 text-appGreen font-bold text-[10px] px-2 py-1 rounded-md active:scale-95 transition border border-green-100">
                     <i class="fa-solid fa-download text-[9px]"></i> ইন্সটল
                 </button>
@@ -90,7 +90,11 @@
 
             <!-- COMPACT PRAYER BANNER -->
             <section class="relative z-30 rounded-xl shadow-sm bg-gradient-to-r from-appGreen to-appGreenLight px-3 py-2.5 flex justify-between items-center">
-                <i class="fa-solid fa-mosque absolute -bottom-2 -right-1 text-[60px] text-white/10 -rotate-6 pointer-events-none"></i>
+                
+                <!-- Background Icon Wrapper with hidden overflow -->
+                <div class="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
+                    <i class="fa-solid fa-mosque absolute -bottom-2 -right-1 text-[60px] text-white/10 -rotate-6"></i>
+                </div>
                 
                 <div class="flex flex-col flex-1 relative z-10">
                     <span class="text-[9px] text-green-100 font-medium tracking-wide">পরবর্তী নামাজ:</span>
@@ -157,33 +161,6 @@
                     </button>
                 </div>
             </section>
-
-            <!-- COMPACT ASMAUL HUSNA -->
-            <section class="bg-husnaBg rounded-xl p-3 shadow-sm relative overflow-hidden">
-                <div class="flex items-center justify-between mb-1.5">
-                    <div class="flex items-center gap-1.5">
-                        <i class="fa-solid fa-book-open-reader text-[9px] text-green-300"></i>
-                        <h3 class="text-[11px] font-bold text-white tracking-wide">আসমাউল হুসনা</h3>
-                    </div>
-                    <span id="ahCounter" class="text-[8px] text-green-100 font-mono bg-black/20 px-1.5 py-0.5 rounded border border-white/10">1/99</span>
-                </div>
-                
-                <div class="flex items-center justify-between w-full">
-                    <div class="flex flex-col justify-center flex-1 pr-2">
-                        <div class="flex items-end gap-2.5 mb-0.5">
-                            <span id="ahArabic" class="text-[20px] font-bold leading-none text-yellow-50 font-arabic">الله</span>
-                            <span id="ahBangla" class="text-[13px] font-bold leading-none mb-0.5 text-green-50">আল্লাহ</span>
-                        </div>
-                        <div id="ahMeaning" class="text-[10px] text-green-100 truncate max-w-[170px] font-medium mt-0.5">যিনি সব কিছুর সৃষ্টিকর্তা</div>
-                    </div>
-                    
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="prevName()" class="w-6 h-6 flex justify-center items-center text-white/80 hover:text-white bg-white/10 rounded-full active:scale-90 transition border border-white/5"><i class="fa-solid fa-backward-step text-[8px]"></i></button>
-                        <button onclick="toggleAudio()" class="w-8 h-8 bg-white text-husnaBg rounded-full flex justify-center items-center shadow-sm active:scale-90 transition"><i id="playIcon" class="fa-solid fa-play text-[10px] ml-0.5"></i></button>
-                        <button onclick="nextName()" class="w-6 h-6 flex justify-center items-center text-white/80 hover:text-white bg-white/10 rounded-full active:scale-90 transition border border-white/5"><i class="fa-solid fa-forward-step text-[8px]"></i></button>
-                    </div>
-                </div>
-            </section>
         </main>
 
         <!-- THIN SIDEBAR -->
@@ -206,7 +183,7 @@
                 </div>
                 
                 <div class="mt-auto mb-2 text-center">
-                    <p class="text-[9px] text-slate-400 font-medium">ভার্সন ১.২.১ (Compact)</p>
+                    <p class="text-[9px] text-slate-400 font-medium">ভার্সন ১.৪.০ (Final)</p>
                 </div>
             </div>
         </div>
@@ -228,17 +205,44 @@
 
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // 1. App Install Logic
+        // 1. PWA & Service Worker (GitHub Pages Ready)
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
+        
+        // Dynamically create manifest for Single File constraint
+        const manifestData = {
+            "name": "Amar Deen",
+            "short_name": "Amar Deen",
+            "start_url": "./",
+            "display": "standalone",
+            "background_color": "#f8fafc",
+            "theme_color": "#1b6b5c",
+            "icons": [{
+                "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzFiNmI1YyIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1zaXplPSI0MCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIj7wn5WMPC90ZXh0Pjwvc3ZnPg==",
+                "sizes": "512x512",
+                "type": "image/svg+xml",
+                "purpose": "any maskable"
+            }]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
+
+        // Dummy Service Worker to pass Chrome's strict PWA install criteria
+        const swCode = `self.addEventListener('fetch', function(e) {});`;
+        const swBlob = new Blob([swCode], {type: 'application/javascript'});
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(console.error);
+        }
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             installBtn.classList.remove('hidden');
             installBtn.classList.add('flex');
         });
+
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -248,7 +252,7 @@
             }
         });
 
-        // 2. UI Interactions
+        // 2. UI Toggle Logic
         let isExpanded = false;
         function toggleCategories() {
             const extra = document.getElementById('extraCategories');
@@ -261,8 +265,18 @@
         }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('translate-x-full'); }
 
-        // 3. Location Dropdown (FIXED BUG)
-        const bdDistricts = ["Bagerhat","Bandarban","Barguna","Barisal","Bhola","Bogra","Brahmanbaria","Chandpur","Chittagong","Chuadanga","Comilla","Cox's Bazar","Dhaka","Dinajpur","Faridpur","Feni","Gaibandha","Gazipur","Gopalganj","Habiganj","Jamalpur","Jessore","Jhalokati","Jhenaidah","Joypurhat","Khagrachari","Khulna","Kishoreganj","Kurigram","Kushtia","Lakshmipur","Lalmonirhat","Madaripur","Magura","Manikganj","Meherpur","Moulvibazar","Munshiganj","Mymensingh","Naogaon","Narail","Narayanganj","Narsingdi","Natore","Nawabganj","Netrokona","Nilphamari","Noakhali","Pabna","Panchagarh","Patuakhali","Pirojpur","Rajbari","Rajshahi","Rangamati","Rangpur","Satkhira","Shariatpur","Sherpur","Sirajganj","Sunamganj","Sylhet","Tangail","Thakurgaon"];
+        // 3. Location Logic (Exactly 64 Districts of Bangladesh)
+        const bdDistricts = [
+            "Bagerhat","Bandarban","Barguna","Barisal","Bhola","Bogra","Brahmanbaria","Chandpur",
+            "Chittagong","Chuadanga","Comilla","Cox's Bazar","Dhaka","Dinajpur","Faridpur","Feni",
+            "Gaibandha","Gazipur","Gopalganj","Habiganj","Jamalpur","Jessore","Jhalokati","Jhenaidah",
+            "Joypurhat","Khagrachari","Khulna","Kishoreganj","Kurigram","Kushtia","Lakshmipur","Lalmonirhat",
+            "Madaripur","Magura","Manikganj","Meherpur","Moulvibazar","Munshiganj","Mymensingh","Naogaon",
+            "Narail","Narayanganj","Narsingdi","Natore","Nawabganj","Netrokona","Nilphamari","Noakhali",
+            "Pabna","Panchagarh","Patuakhali","Pirojpur","Rajbari","Rajshahi","Rangamati","Rangpur",
+            "Satkhira","Shariatpur","Sherpur","Sirajganj","Sunamganj","Sylhet","Tangail","Thakurgaon"
+        ];
+        
         let currentCity = localStorage.getItem('userCity') || "Dhaka";
         
         function initLocation() {
@@ -282,7 +296,7 @@
         }
 
         function toggleLocDropdown(e) {
-            e.stopPropagation(); // Prevent closing instantly
+            e.stopPropagation();
             const dd = document.getElementById('locDropdown');
             dd.classList.toggle('hidden');
             if(!dd.classList.contains('hidden')) document.getElementById('locSearch').focus();
@@ -291,10 +305,12 @@
         function filterLocations() {
             const filter = document.getElementById('locSearch').value.toUpperCase();
             const lis = document.getElementById('locList').getElementsByTagName('li');
-            for (let li of lis) li.style.display = li.innerText.toUpperCase().includes(filter) ? "" : "none";
+            for (let li of lis) {
+                li.style.display = li.innerText.toUpperCase().includes(filter) ? "" : "none";
+            }
         }
 
-        // Close dropdown when clicking outside anywhere on screen
+        // Close dropdown when clicking anywhere else
         document.addEventListener('click', (e) => {
             const dd = document.getElementById('locDropdown');
             if (dd && !dd.contains(e.target) && e.target.id !== 'locBtn') {
@@ -302,7 +318,7 @@
             }
         });
 
-        // 4. Notifications
+        // 4. Notification Logic
         let notiActive = localStorage.getItem('amarDeenBell') === 'true';
         let notifiedPrayers = new Set();
         
@@ -310,7 +326,7 @@
             const icon = document.getElementById('notiIcon');
             const txt = document.getElementById('notiText');
             if(notiActive) {
-                icon.className = 'fa-solid fa-bell text-[9px] text-yellow-300';
+                icon.className = 'fa-solid fa-bell text-[9px] text-yellow-300 drop-shadow-md';
                 txt.classList.add('text-yellow-100');
             } else {
                 icon.className = 'fa-regular fa-bell text-[9px] text-white/70';
@@ -320,17 +336,17 @@
 
         async function toggleNoti() {
             if (!notiActive) {
-                if (!("Notification" in window)) return alert("আপনার ব্রাউজার সাপোর্ট করে না।");
+                if (!("Notification" in window)) return alert("আপনার ব্রাউজার নোটিফিকেশন সাপোর্ট করে না।");
                 const perm = await Notification.requestPermission();
                 if (perm === "granted") notiActive = true;
-                else return alert("অ্যালার্ম পেতে পারমিশন দিন।");
+                else return alert("অ্যালার্ম পেতে ব্রাউজারের সেটিংস থেকে পারমিশন দিন।");
             } else notiActive = false;
             
             localStorage.setItem('amarDeenBell', notiActive);
             updateNotiUI();
         }
 
-        // 5. Prayer API
+        // 5. Prayer Times Logic
         let prayerTimesData = {};
         let countdownInterval;
         const bnPrayerNames = { 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'এশা' };
@@ -340,7 +356,11 @@
             const cacheKey = `p_${city}_${dateStr}`;
             const cachedData = localStorage.getItem(cacheKey);
             
-            if(cachedData) { prayerTimesData = JSON.parse(cachedData); startCalculation(); return; }
+            if(cachedData) { 
+                prayerTimesData = JSON.parse(cachedData); 
+                startCalculation(); 
+                return; 
+            }
 
             try {
                 const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Bangladesh&method=1`);
@@ -350,13 +370,15 @@
                     localStorage.setItem(cacheKey, JSON.stringify(prayerTimesData));
                     startCalculation();
                 }
-            } catch (e) {}
+            } catch (e) {
+                document.getElementById('modalPrayerList').innerHTML = `<div class="text-center text-red-500 text-[10px] py-2">ইন্টারনেট সংযোগ চেক করুন!</div>`;
+            }
         }
 
         function format12Hour(timeStr) {
             if(!timeStr) return "--:--";
             let [h, m] = timeStr.split(':');
-            h = parseInt(h);
+            h = parseInt(h, 10);
             let ampm = h >= 12 ? 'PM' : 'AM';
             h = h % 12 || 12; 
             return `${h < 10 ? '0'+h : h}:${m} ${ampm}`;
@@ -368,48 +390,71 @@
             
             countdownInterval = setInterval(() => {
                 if(!prayerTimesData || !prayerTimesData.Fajr) return;
+                
                 const now = new Date();
                 let nextPrayer = 'Fajr', timeStrForUI = prayerTimesData['Fajr'], nextTime = null;
                 const times = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
+                // Find next prayer today
                 for (let pt of times) {
                     if(!prayerTimesData[pt]) continue;
                     let [h, m] = prayerTimesData[pt].split(':');
-                    let pTime = new Date(); pTime.setHours(h, m, 0, 0);
-                    if (pTime > now) { nextPrayer = pt; nextTime = pTime; timeStrForUI = prayerTimesData[pt]; break; }
+                    let pTime = new Date(); 
+                    pTime.setHours(parseInt(h, 10), parseInt(m, 10), 0, 0);
+                    
+                    if (pTime > now) { 
+                        nextPrayer = pt; 
+                        nextTime = pTime; 
+                        timeStrForUI = prayerTimesData[pt]; 
+                        break; 
+                    }
                 }
                 
+                // If all prayers done today, target tomorrow's Fajr
                 if (!nextTime) {
                     let [h, m] = prayerTimesData['Fajr'].split(':');
-                    nextTime = new Date(); nextTime.setDate(now.getDate() + 1); nextTime.setHours(h, m, 0, 0);
+                    nextTime = new Date(); 
+                    nextTime.setDate(now.getDate() + 1); 
+                    nextTime.setHours(parseInt(h, 10), parseInt(m, 10), 0, 0);
                 }
 
                 document.getElementById('nextPrayerName').innerText = bnPrayerNames[nextPrayer] || '--';
                 document.getElementById('nextPrayerTime').innerText = `(${format12Hour(timeStrForUI)})`;
                 
+                // Countdown calculation
                 let diff = nextTime - now;
                 let hL = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
                 let mL = Math.floor((diff % (1000*60*60)) / (1000*60));
                 let sL = Math.floor((diff % (1000*60)) / 1000);
                 
-                document.getElementById('countdown').innerText = `${hL.toString().padStart(2, '0')}:${mL.toString().padStart(2, '0')}:${sL.toString().padStart(2, '0')}`;
+                document.getElementById('countdown').innerText = 
+                    `${hL.toString().padStart(2, '0')}:${mL.toString().padStart(2, '0')}:${sL.toString().padStart(2, '0')}`;
 
+                // Trigger Notification exactly at the moment (diff < 1 sec)
                 if (notiActive && diff > 0 && diff <= 1000 && !notifiedPrayers.has(nextPrayer) && nextPrayer !== 'Sunrise') {
                     if (Notification.permission === "granted") {
-                        new Notification("নামাজের সময়", { body: `${bnPrayerNames[nextPrayer]} এর ওয়াক্ত শুরু হয়েছে।`});
+                        new Notification("নামাজের সময়", { 
+                            body: `${currentCity}-এ ${bnPrayerNames[nextPrayer]} এর ওয়াক্ত শুরু হয়েছে।`,
+                            icon: "https://cdn-icons-png.flaticon.com/512/2855/2855589.png"
+                        });
                         notifiedPrayers.add(nextPrayer);
                     }
                 }
+                
+                // Reset notifications at midnight
                 if(now.getHours() === 0 && now.getMinutes() === 0) notifiedPrayers.clear();
             }, 1000);
         }
 
+        // Modal Logic
         const modal = document.getElementById('prayerModal');
         const modalContent = document.getElementById('prayerModalContent');
+        
         function openPrayerModal() { 
             modal.classList.remove('hidden');
             setTimeout(() => { modalContent.classList.remove('scale-95'); }, 10);
         }
+        
         function closePrayerModal() { 
             modalContent.classList.add('scale-95');
             setTimeout(() => modal.classList.add('hidden'), 200);
@@ -431,55 +476,12 @@
             modalList.innerHTML = html;
         }
 
-        // 6. Asmaul Husna Live API
-        let husnaNames = [];
-        let currentHusnaIndex = 0;
-        let isPlaying = false;
-        const audioPlayer = new Audio();
-        
-        audioPlayer.onended = () => nextName(true);
-        audioPlayer.onerror = () => { isPlaying = false; updatePlayIcon(); };
-
-        async function fetchHusna() {
-            const cached = localStorage.getItem('h_data');
-            if(cached) { husnaNames = JSON.parse(cached); updateHusnaUI(); return; }
-            try {
-                const res = await fetch('https://api.aladhan.com/v1/asmaAlHusna');
-                const data = await res.json();
-                if(data.code === 200) {
-                    husnaNames = data.data;
-                    localStorage.setItem('h_data', JSON.stringify(husnaNames));
-                    updateHusnaUI();
-                }
-            } catch(e) {}
-        }
-
-        function updateHusnaUI() {
-            if(!husnaNames.length) return;
-            const item = husnaNames[currentHusnaIndex];
-            document.getElementById('ahArabic').innerText = item.name;
-            document.getElementById('ahBangla').innerText = item.transliteration;
-            document.getElementById('ahMeaning').innerText = item.en.meaning;
-            document.getElementById('ahCounter').innerText = `${item.number}/99`;
-            
-            audioPlayer.src = `https://cdn.jsdelivr.net/gh/islamic-network/cdn@master/asmaAlHusna/audio/${item.number}.mp3`;
-            if(isPlaying) audioPlayer.play().catch(() => { isPlaying = false; updatePlayIcon(); });
-        }
-
-        function toggleAudio() {
-            if(isPlaying) { audioPlayer.pause(); isPlaying = false; } 
-            else { audioPlayer.play().catch(()=>{}); isPlaying = true; }
-            updatePlayIcon();
-        }
-
-        function updatePlayIcon() {
-            document.getElementById('playIcon').className = isPlaying ? 'fa-solid fa-pause text-[10px]' : 'fa-solid fa-play text-[10px] ml-0.5';
-        }
-
-        function nextName(autoPlay = false) { currentHusnaIndex = (currentHusnaIndex + 1) % 99; if(autoPlay) isPlaying = true; updateHusnaUI(); }
-        function prevName() { currentHusnaIndex = (currentHusnaIndex - 1 + 99) % 99; updateHusnaUI(); }
-
-        window.addEventListener('DOMContentLoaded', () => { initLocation(); updateNotiUI(); fetchPrayerTimes(); fetchHusna(); });
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => { 
+            initLocation(); 
+            updateNotiUI(); 
+            fetchPrayerTimes(); 
+        });
     </script>
 </body>
 </html>
