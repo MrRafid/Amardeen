@@ -1,5 +1,25 @@
 [
   {
+    "type": "video",
+    "active": true,
+    "title": "বড় ভিডিও (ফুল স্ক্রিন)",
+    "youtubeId": "J-o1dFveFwU"
+  },
+  {
+    "type": "video-grid",
+    "active": true,
+    "videos": [
+      {
+        "title": "গল্প ১",
+        "youtubeId": "J-o1dFveFwU"
+      },
+      {
+        "title": "গল্প ২",
+        "youtubeId": "J-o1dFveFwU"
+      }
+    ]
+  },
+  {
     "type": "notice",
     "active": true,
     "title": "জরুরী নোটিশ",
@@ -21,12 +41,6 @@
     "meaning": "আল্লাহর নামে, যাঁর নামের বরকতে আসমান ও যমীনের কোনো কিছুই ক্ষতি করতে পারে না, আর তিনি সর্বশ্রোতা, সর্বজ্ঞানী।"
   },
   {
-    "type": "video",
-    "active": true,
-    "title": "মন জুড়ানো তেলাওয়াত",
-    "youtubeId": "J-o1dFveFwU"
-  },
-  {
     "type": "ramadan",
     "active": false,
     "date": "১ম রমজান",
@@ -35,23 +49,24 @@
   },
   {
     "type": "image",
-    "active": false,
+    "active": true,
     "title": "জুম্মা মুবারক",
-    "imageUrl": "https://i.ibb.co/Placeholder/jumma.jpg",
+    "imageUrl": "https://i.ibb.co/6H8fP9L/jumma.jpg",
     "link": "#"
   },
   {
     "type": "quote",
-    "active": false,
+    "active": true,
     "text": "দুনিয়া হচ্ছে মুমিনের জন্য কারাগার আর কাফেরের জন্য জান্নাত।",
     "author": "আল-হাদিস"
   },
   {
     "type": "link",
-    "active": false,
-    "title": "আমাদের ইউটিউব চ্যানেল সাবস্ক্রাইব করুন",
+    "active": true,
+    "title": "আমাদের ইউটিউব চ্যানেল",
     "url": "https://youtube.com",
-    "buttonText": "সাবস্ক্রাইব করুন",
+    "buttonText": "সাবস্ক্রাইব",
     "icon": "fa-youtube"
   }
 ]
+
