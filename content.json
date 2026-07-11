@@ -9,7 +9,7 @@
     {
     "type": "playlist",
     "active": true,
-    "title": "এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ (সাঃ) (প্লেলিস্ট)",
+    "title": "",
     "youtubeId": "PLEdLmfVFySHk"
   },
  
@@ -88,10 +88,10 @@
   },
   {
     "type": "image",
-    "active": false,
-    "title": "জুম্মা মুবারক",
-    "imageUrl": "https://i.ibb.co/6H8fP9L/jumma.jpg",
-    "link": "#"
+    "active": true,
+    "title": "এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ (সাঃ) (প্লেলিস্ট)",
+    "imageUrl": "https://i.ytimg.com/vi_webp/DAORc0Moauk/hqdefault.webp",
+    "link": "https://youtube.com/playlist?list=PLEdLmfVFySHk&si=vePoghQeGxTZGXpx"
   },
   {
     "type": "quote",
