@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <!-- GitHub Pages থেকে অডিও ব্লক হওয়া ঠেকাতে এই মেটা ট্যাগটি যুক্ত করা হয়েছে -->
+  <meta name="referrer" content="no-referrer"> 
   <title>ডিজিটাল তাসবীহ</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -340,6 +342,7 @@
       const stopAudio = () => {
         els.audioPlayer.pause();
         els.audioPlayer.currentTime = 0;
+        if(window.speechSynthesis) window.speechSynthesis.cancel();
         isPlaying = false;
         els.playIcon.classList.remove('hidden');
         els.pauseIcon.classList.add('hidden');
@@ -353,17 +356,29 @@
           els.playIcon.classList.add('hidden');
           els.pauseIcon.classList.remove('hidden');
           
-          const ttsUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=ar&q=${encodeURIComponent(currentZikr.arabic)}`;
+          // Audio API URL update for better support in GitHub Pages
+          const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ar&client=tw-ob&q=${encodeURIComponent(currentZikr.arabic)}`;
           els.audioPlayer.src = ttsUrl;
+          
+          // Smart Fallback System
           els.audioPlayer.play().catch(e => {
-            alert("অডিও প্লে করতে সমস্যা হচ্ছে। ইন্টারনেট কানেকশন চেক করুন।");
-            stopAudio();
+            // যদি গুগল অডিও ব্লক করে দেয় (যেমন গিটহাব পেজে), তাহলে স্বয়ংক্রিয়ভাবে ব্রাউজারের নিজস্ব অডিও প্লে হবে 
+            if ('speechSynthesis' in window) {
+              const utterance = new SpeechSynthesisUtterance(currentZikr.arabic);
+              utterance.lang = 'ar-SA';
+              utterance.rate = 0.8;
+              utterance.onend = stopAudio;
+              utterance.onerror = stopAudio;
+              window.speechSynthesis.speak(utterance);
+            } else {
+              stopAudio();
+            }
           });
         }
       });
       
       els.audioPlayer.addEventListener('ended', stopAudio);
-      els.audioPlayer.addEventListener('error', stopAudio);
+      // Removed error listener to prevent conflict with the fallback system
 
       let audioCtx = null;
       
@@ -400,12 +415,10 @@
           if(isTarget) {
              osc.frequency.setValueAtTime(500, audioCtx.currentTime);
              osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-             // সাউন্ড অনেক বাড়ানো হয়েছে (0.15 থেকে 0.9)
              gain.gain.setValueAtTime(0.9, audioCtx.currentTime); 
           } else {
              osc.frequency.setValueAtTime(300, audioCtx.currentTime);
              osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.05);
-             // সাউন্ড অনেক বাড়ানো হয়েছে (0.06 থেকে 0.5)
              gain.gain.setValueAtTime(0.5, audioCtx.currentTime); 
           }
           
