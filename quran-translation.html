@@ -10,6 +10,9 @@
     <!-- Google Fonts: Noto Sans Bengali (UI) & Amiri (Arabic) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- যুক্ত করা হয়েছে এক্সটার্নাল সংশোধনী ফাইল -->
+    <script src="corrections.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -208,7 +211,6 @@
             });
         }
 
-        // --- Compact UI Navigation ---
         function switchTab(t) {
             state.tab = t;
             ['home', 'surah', 'para'].forEach(x => {
@@ -233,7 +235,6 @@
             if(state.tab === 'home') loadHist();
         }
 
-        // --- Fetch & Render ---
         async function loadSurahs() {
             if(localStorage.getItem('qs_final')) {
                 state.surahs = JSON.parse(localStorage.getItem('qs_final'));
@@ -313,7 +314,21 @@
             localStorage.setItem('qh_final', JSON.stringify(hist));
         }
 
-        // --- Data Fetch Engine ---
+        // ==========================================
+        // Applying the Phonetic Dictionary (From corrections.js)
+        // ==========================================
+        function fixPronunciationForTTS(text) {
+            let fixedText = text;
+            // Check if AUDIO_CORRECTIONS is loaded from corrections.js
+            if (typeof AUDIO_CORRECTIONS !== 'undefined') {
+                for (let word in AUDIO_CORRECTIONS) {
+                    let regex = new RegExp(`(^|[\\s,।?!;:"'\\-\\[\\](){}\\ঃ])(${word})(?=[\\s,।?!;:"'\\-\\[\\](){}\\ঃ]|$)`, 'g');
+                    fixedText = fixedText.replace(regex, `$1${AUDIO_CORRECTIONS[word]}`);
+                }
+            }
+            return fixedText;
+        }
+
         async function fetchChap(id, type) {
             const meta = type === 'surah' ? state.surahs.find(s=>s.id===id) : state.paras.find(p=>p.id===id);
             let vs = [], p = 1, tP = 1;
@@ -328,9 +343,8 @@
             return vs.map((v, idx) => ({
                 id: v.id, aNum: v.verse_number, 
                 tAr: v.text_uthmani, 
-                tBn: v.translations[0].text,
-                // Clean HTML tags and superscript numbers for pure text-to-speech reading
-                tBnClean: v.translations[0].text.replace(/<sup.*?<\/sup>/g, '').replace(/<[^>]*>?/gm, '').trim(),
+                tBnVisual: v.translations[0].text.replace(/<sup.*?<\/sup>/g, ''),
+                tBnAudio: fixPronunciationForTTS(v.translations[0].text.replace(/<[^>]*>?/gm, '').replace(/<sup.*?<\/sup>/g, '').trim()),
                 sName: type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name, 
                 sId: id, type: type
             }));
@@ -412,9 +426,7 @@
                     <div class="flex items-start gap-3 relative z-10">
                         <div class="w-7 h-7 rounded-full border border-teal-100 flex items-center justify-center text-[10px] font-bold text-teal bg-teal-50 shrink-0 mt-1">${tbn(v.aNum)}</div>
                         <div class="text-left flex-1">
-                            <!-- বাংলা অনুবাদ বড় করে উপরে দেওয়া হয়েছে -->
-                            <p class="text-[16px] font-semibold text-gray-800 leading-relaxed mb-2">${v.tBnClean || v.tBn.replace(/<sup.*?<\/sup>/g, '')}</p>
-                            <!-- আরবি টেক্সট ছোট করে নিচে দেওয়া হয়েছে -->
+                            <p class="text-[16px] font-semibold text-gray-800 leading-relaxed mb-2">${v.tBnVisual}</p>
                             <div class="pt-2 border-t border-gray-50 text-right">
                                 <p class="arabic-text text-[15px] text-gray-500 leading-relaxed">${v.tAr}</p>
                             </div>
@@ -425,10 +437,16 @@
             document.getElementById('verses-container').innerHTML = h;
         }
 
-        // --- GAPLESS AUDIO ENGINE (TTS FOR BENGALI) ---
         function setupAudioEngine() {
             audioEl.addEventListener('ended', () => playNext(false));
             
+            audioEl.addEventListener('error', (e) => { 
+                if(state.isPlaying) {
+                    dom.status.classList.remove('hidden'); dom.status.textContent = 'নেটওয়ার্ক এরর...';
+                    setTimeout(() => playNext(false), 2000); 
+                }
+            });
+
             audioEl.addEventListener('waiting', () => { dom.status.classList.remove('hidden'); });
             audioEl.addEventListener('playing', () => { dom.status.classList.add('hidden'); });
 
@@ -460,28 +478,12 @@
                 renderVerses(state.queue.filter(v => v.sId === t.sId && v.type === t.type));
             }
 
-            if(window.speechSynthesis) window.speechSynthesis.cancel(); // আগের কোনো স্পিচ থাকলে বন্ধ করা
-
-            // গুগল ক্লাউড TTS ব্যবহার করে বাংলা অডিও তৈরি
-            const textToRead = t.tBnClean;
-            const ttsUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=bn&q=${encodeURIComponent(textToRead)}`;
+            const ttsUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=bn&q=${encodeURIComponent(t.tBnAudio)}`;
             
             audioEl.src = ttsUrl;
             audioEl.play().catch(e => {
-                // গুগল যদি দীর্ঘ আয়াত বা CORS এর জন্য ব্লক করে দেয়, তবে ব্রাউজারের নিজস্ব স্পিচ সিনথেসিস ব্যবহার হবে
-                if ('speechSynthesis' in window) {
-                    state.isPlaying = true;
-                    dom.iPlay.classList.add('hidden'); dom.iPause.classList.remove('hidden');
-                    
-                    const utterance = new SpeechSynthesisUtterance(textToRead);
-                    utterance.lang = 'bn-BD';
-                    utterance.rate = 0.9; // পড়ার গতি কিছুটা রিলাক্সড
-                    utterance.onend = () => playNext(false);
-                    utterance.onerror = () => playNext(false);
-                    window.speechSynthesis.speak(utterance);
-                } else {
-                    setTimeout(() => playNext(false), 1500);
-                }
+                console.log("Audio Play Error:", e);
+                setTimeout(() => playNext(false), 1500);
             });
             
             updateUI(t, true); 
@@ -493,18 +495,9 @@
             if (state.pIdx === -1 && state.queue.length > 0) return playTrack(0);
             
             if (state.isPlaying) {
-                state.isPlaying = false;
                 audioEl.pause();
-                if(window.speechSynthesis) window.speechSynthesis.pause();
-                dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
             } else {
-                state.isPlaying = true;
-                if(window.speechSynthesis && window.speechSynthesis.paused) {
-                    window.speechSynthesis.resume();
-                } else {
-                    audioEl.play().catch(e => console.log(e));
-                }
-                dom.iPlay.classList.add('hidden'); dom.iPause.classList.remove('hidden');
+                audioEl.play().catch(e => console.log(e));
             }
             resetActivityTimer();
         }
@@ -549,5 +542,4 @@
     </script>
 </body>
 </html>
-
 
