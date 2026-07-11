@@ -15,7 +15,7 @@
  
        {
     "type": "video-grid",
-    "active": true,
+    "active": false,
     "videos": [
       {
         "title": "কবরের ভেতর একে একে কী অপেক্ষা করছে | এআই ভিজ্যুয়ালাইজড কিয়ামত দিবস সিরিজ - পর্ব ১",
@@ -31,7 +31,7 @@
 
   {
     "type": "video-grid",
-    "active": true,
+    "active": false,
     "videos": [
       {
         "title": "পুনরুত্থানের দিন - পুলসিরাত | এআই–ভিজ্যুয়ালাইজড কিয়ামত দিবস সিরিজ – পর্ব ৩",
@@ -88,7 +88,7 @@
   },
   {
     "type": "image",
-    "active": true,
+    "active": false,
     "title": "এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ (সাঃ) (প্লেলিস্ট)",
     "imageUrl": "https://i.ytimg.com/vi_webp/DAORc0Moauk/hqdefault.webp",
     "link": "https://youtube.com/playlist?list=PLEdLmfVFySHk&si=vePoghQeGxTZGXpx"
