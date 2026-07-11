@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="bn" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ডিজিটাল তাসবীহ</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { 
+            primary: '#0ea5e9', 
+            'primary-light': '#e0f2fe',
+            secondary: '#f59e0b',
+          },
+          fontFamily: { 
+            bengali: ['Noto Sans Bengali', 'sans-serif'],
+            arabic: ['Amiri', 'serif']
+          },
+          boxShadow: {
+            'card': '0 2px 10px rgba(0, 0, 0, 0.03)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; }
+    
+    @keyframes pulse-ring {
+      0% { transform: scale(0.85); opacity: 0.6; }
+      100% { transform: scale(1.15); opacity: 0; }
+    }
+    .pulse-animation { animation: pulse-ring 0.35s ease-out; }
+    
+    .tap-area { transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); }
+    .tap-area:active { transform: scale(0.96); box-shadow: 0 0 15px rgba(14, 165, 233, 0.15); }
+    
+    .btn-active:active { transform: scale(0.90); }
+    .progress-ring { transition: stroke-dashoffset 0.2s ease-out, stroke 0.3s ease; }
+    
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col h-screen font-bengali overflow-hidden transition-colors duration-300">
+
+  <!-- Header -->
+  <header class="w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm px-4 py-3 flex justify-between items-center z-30 relative">
+    <div class="flex items-center space-x-2">
+      <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      </div>
+      <h1 class="text-[17px] font-bold text-slate-800 dark:text-white tracking-wide">ডিজিটাল তাসবীহ</h1>
+    </div>
+    
+    <div class="flex items-center space-x-1.5">
+      <button id="show-list-btn" class="w-9 h-9 rounded-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 btn-active hover:text-primary transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg>
+      </button>
+      <button id="theme-toggle" class="w-9 h-9 rounded-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 btn-active hover:text-primary transition-colors">
+        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- List Modal -->
+  <div id="zikr-list-modal" class="fixed inset-0 z-50 flex items-end justify-center pointer-events-none">
+    <div id="list-backdrop" class="absolute inset-0 bg-slate-900/30 dark:bg-slate-950/70 backdrop-blur-sm opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+    <div id="list-content" class="w-full max-w-md bg-white dark:bg-slate-900 rounded-t-[1.5rem] shadow-2xl transform translate-y-full transition-transform duration-300 pointer-events-auto flex flex-col max-h-[75vh]">
+      <div class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-800">
+        <h2 class="font-bold text-[15px] text-slate-800 dark:text-white">জিকির নির্বাচন করুন</h2>
+        <button id="close-list-btn" class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-full btn-active hover:text-red-500 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+      <div id="zikr-list-container" class="flex-grow overflow-y-auto custom-scrollbar pb-6 px-2 pt-2 space-y-1">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-grow flex flex-col items-center justify-between p-4 relative w-full max-w-md mx-auto h-full pb-6">
+    
+    <!-- Zikr Display Card -->
+    <div class="w-full bg-white dark:bg-slate-900 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800/80 overflow-hidden flex flex-col mt-1">
+      
+      <div class="flex flex-col items-center justify-center text-center px-4 py-6 min-h-[135px]" id="text-content-area" style="transition: opacity 0.2s ease-in-out;">
+        <div id="zikr-arabic" class="font-arabic text-[34px] md:text-4xl text-slate-800 dark:text-white leading-tight font-bold mb-2" dir="rtl">اللَّهُ</div>
+        <div id="zikr-pronunciation" class="text-[14px] font-bold text-slate-700 dark:text-slate-200">আল্লাহ</div>
+        <div id="zikr-meaning" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">সবচেয়ে বড় নাম</div>
+      </div>
+
+      <!-- Action Bar -->
+      <div class="flex items-center justify-between px-4 py-2 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800">
+        <button id="prev-zikr-btn" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-primary dark:hover:text-primary rounded-full transition-colors btn-active focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+
+        <div class="flex items-center justify-center space-x-1.5 flex-grow" id="slide-indicators"></div>
+
+        <button id="play-audio-btn" class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all btn-active focus:outline-none" title="শুনুন/থামান">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+        </button>
+
+        <button id="next-zikr-btn" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-primary dark:hover:text-primary rounded-full transition-colors btn-active focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Counter Circle -->
+    <div class="relative flex justify-center items-center flex-grow py-2 w-full">
+      <div id="pulse" class="absolute inset-0 m-auto w-[230px] h-[230px] md:w-[260px] md:h-[260px] rounded-full border-[3px] border-primary opacity-0 pointer-events-none"></div>
+
+      <div id="tap-area" class="tap-area relative w-[230px] h-[230px] md:w-[260px] md:h-[260px] bg-white dark:bg-slate-900 rounded-full shadow-card dark:shadow-[0_4px_20px_-2px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center cursor-pointer border-[8px] border-slate-50 dark:border-slate-800/40 select-none z-10">
+        
+        <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="5" fill="none" class="text-slate-100 dark:text-slate-800" />
+          <circle id="progress-circle" class="progress-ring text-primary drop-shadow-[0_0_6px_rgba(14,165,233,0.3)]" cx="100" cy="100" r="90" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round" />
+        </svg>
+        
+        <div class="relative z-10 text-center flex flex-col items-center justify-center h-full w-full mt-2">
+          <div class="bg-primary-light/50 dark:bg-slate-800 px-3 py-1 rounded-full text-[10px] font-bold text-primary dark:text-slate-300 flex items-center">
+            <span class="mr-1 opacity-70">লক্ষ্য:</span>
+            <span id="target-display">৩৩</span>
+          </div>
+          <span id="counter" class="text-[5.5rem] md:text-[6rem] leading-none font-black text-slate-800 dark:text-white tabular-nums tracking-tighter mt-1">০</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Controls -->
+    <div class="w-full bg-white dark:bg-slate-900 rounded-[1rem] shadow-card border border-slate-100 dark:border-slate-800 p-1.5">
+      <div class="grid grid-cols-3 gap-1">
+        <button id="reset-btn" class="flex flex-col items-center justify-center py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 group transition-colors btn-active focus:outline-none">
+          <div class="text-slate-400 group-hover:text-red-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+          </div>
+          <span class="text-[9px] font-bold text-slate-500 group-hover:text-red-500 mt-1 transition-colors">রিসেট করুন</span>
+        </button>
+
+        <button id="target-btn" class="flex flex-col items-center justify-center py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 group transition-colors btn-active border-x border-slate-100 dark:border-slate-800/50 focus:outline-none">
+          <div class="text-slate-400 group-hover:text-primary transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          </div>
+          <span class="text-[9px] font-bold text-slate-500 group-hover:text-primary mt-1 transition-colors">টার্গেট পাল্টান</span>
+        </button>
+
+        <button id="sound-btn" class="flex flex-col items-center justify-center py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 group transition-colors btn-active focus:outline-none">
+          <div id="sound-icon-container" class="transition-colors"></div>
+          <span class="text-[9px] font-bold text-slate-500 mt-1">সাউন্ড/ভাইব্রেট</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Reset Modal -->
+  <div id="reset-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-200 pointer-events-none">
+    <div id="modal-backdrop" class="absolute inset-0 bg-slate-900/40 dark:bg-slate-950/80 backdrop-blur-sm pointer-events-auto"></div>
+    <div class="relative bg-white dark:bg-slate-900 w-[270px] rounded-[1.25rem] p-5 shadow-2xl border border-slate-100 dark:border-slate-800 text-center transform scale-95 transition-transform duration-200 pointer-events-auto" id="modal-content">
+      <div class="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 text-red-500 mx-auto flex items-center justify-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+      </div>
+      <h3 class="text-[16px] font-bold text-slate-800 dark:text-white mb-1">রিসেট করবেন?</h3>
+      <p class="text-slate-500 dark:text-slate-400 mb-5 text-[11px] leading-tight">বর্তমান গণনা শূন্য হয়ে যাবে।</p>
+      <div class="flex space-x-2">
+        <button id="cancel-reset" class="flex-1 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg font-bold text-[13px] btn-active focus:outline-none">না</button>
+        <button id="confirm-reset" class="flex-1 py-2 bg-red-500 text-white rounded-lg font-bold text-[13px] btn-active focus:outline-none">হ্যাঁ, রিসেট</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="zikr-audio-player" class="hidden"></audio>
+
+  <script>
+    // 100% Authentic Zikr Database (Ordered Serially)
+    const zikrList = [
+      { title: 'আল্লাহ', arabic: 'اللَّهُ', pronunciation: 'আল্লাহ', meaning: 'সবচেয়ে বড় নাম', target: 33 },
+      { title: 'সুবহানাল্লাহ', arabic: 'سُبْحَانَ اللَّهِ', pronunciation: 'সুবহানাল্লাহ', meaning: 'আল্লাহ পবিত্র ও মহিমান্বিত', target: 33 },
+      { title: 'আলহামদুলিল্লাহ', arabic: 'ٱلْحَمْدُ لِلَّٰهِ', pronunciation: 'আলহামদুলিল্লাহ', meaning: 'যাবতীয় প্রশংসা আল্লাহর জন্য', target: 33 },
+      { title: 'আল্লাহু আকবার', arabic: 'اللَّهُ أَكْبَرُ', pronunciation: 'আল্লাহু আকবার', meaning: 'আল্লাহ সর্বশ্রেষ্ঠ', target: 34 },
+      { title: 'কালিমা তাইয়্যেবা', arabic: 'لَا إِلَٰهَ إِلَّا ٱللَّٰهُ', pronunciation: 'লা ইলাহা ইল্লাল্লাহ', meaning: 'আল্লাহ ছাড়া কোনো উপাস্য নেই', target: 100 },
+      { title: 'কালিমা তামজীদ', arabic: 'سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ', pronunciation: 'সুবহানাল্লাহি ওয়ালহামদুলিল্লাহি ওয়া লা ইলাহা ইল্লাল্লাহু ওয়াল্লাহু আকবার', meaning: 'আল্লাহ পবিত্র, সকল প্রশংসা আল্লাহর, আল্লাহ ছাড়া উপাস্য নেই, আল্লাহ সর্বশ্রেষ্ঠ', target: 100 },
+      { title: 'তাসবীহ ও তাহমীদ', arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', pronunciation: 'সুবহানাল্লাহি ওয়া বিহামদিহী', meaning: 'আমি আল্লাহর সপ্রশংস পবিত্রতা ঘোষণা করছি', target: 100 },
+      { title: 'তাসবীহ আজিম', arabic: 'سُبْحَانَ اللَّهِ الْعَظِيمِ', pronunciation: 'সুবহানাল্লাহিল আযীম', meaning: 'মহান আল্লাহ অতি পবিত্র', target: 100 },
+      { title: 'ইস্তেগফার', arabic: 'أَسْتَغْفِرُ اللَّهَ', pronunciation: 'আস্তাগফিরুল্লাহ', meaning: 'আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি', target: 100 },
+      { title: 'ইস্তেগফার (পূর্ণ)', arabic: 'أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ', pronunciation: 'আস্তাগফিরুল্লাহা ওয়া আতুবু ইলাইহি', meaning: 'আমি আল্লাহর কাছে ক্ষমা চাই এবং তাঁর দিকেই ফিরে যাই', target: 100 },
+      { title: 'দরুদ শরীফ', arabic: 'صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ', pronunciation: 'সাল্লাল্লাহু আলাইহি ওয়াসাল্লাম', meaning: 'আল্লাহ তাঁর ওপর রহমত ও শান্তি বর্ষণ করুন', target: 100 },
+      { title: 'হাওকালা', arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', pronunciation: 'লা হাওলা ওয়ালা কুওয়াতা ইল্লা বিল্লাহ', meaning: 'আল্লাহর সাহায্য ছাড়া পাপ থেকে বাঁচার বা পুণ্য করার কোনো শক্তি নেই', target: 100 },
+      { title: 'হাসবুনাল্লাহ', arabic: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ', pronunciation: 'হাসবুনাল্লাহু ওয়া নি’মাল ওয়াকীল', meaning: 'আল্লাহই আমাদের জন্য যথেষ্ট এবং তিনি উত্তম কর্মবিধায়ক', target: 100 }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const toBn = (num) => String(num).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+
+      let currentIndex = parseInt(localStorage.getItem('tasbeeh_v6_index')) || 0;
+      if (currentIndex < 0 || currentIndex >= zikrList.length) currentIndex = 0;
+      
+      let counts = JSON.parse(localStorage.getItem('tasbeeh_v6_counts')) || {};
+      let targets = JSON.parse(localStorage.getItem('tasbeeh_v6_targets')) || {};
+      
+      let currentZikr = zikrList[currentIndex];
+      let count = counts[currentIndex] || 0;
+      let target = targets[currentIndex] || currentZikr.target;
+      let soundEnabled = localStorage.getItem('tasbeeh_v6_sound') !== 'false';
+      let isPlaying = false;
+
+      const els = {
+        arabic: document.getElementById('zikr-arabic'),
+        pronun: document.getElementById('zikr-pronunciation'),
+        meaning: document.getElementById('zikr-meaning'),
+        textContentArea: document.getElementById('text-content-area'),
+        counter: document.getElementById('counter'),
+        targetTxt: document.getElementById('target-display'),
+        progress: document.getElementById('progress-circle'),
+        indicators: document.getElementById('slide-indicators'),
+        audioPlayer: document.getElementById('zikr-audio-player'),
+        playBtn: document.getElementById('play-audio-btn'),
+        soundIcon: document.getElementById('sound-icon-container'),
+        pulse: document.getElementById('pulse')
+      };
+
+      // Theme
+      const applyTheme = (isDark) => {
+        document.documentElement.classList.toggle('dark', isDark);
+        document.getElementById('theme-icon-dark').classList.toggle('hidden', !isDark);
+        document.getElementById('theme-icon-light').classList.toggle('hidden', isDark);
+      };
+      applyTheme(localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches));
+
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        const isDark = !document.documentElement.classList.contains('dark');
+        applyTheme(isDark);
+        localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+      });
+
+      // Update Slider & Dots
+      const updateSliderUI = () => {
+        els.textContentArea.style.opacity = '0';
+        if (isPlaying) { els.audioPlayer.pause(); resetPlayIcon(); }
+
+        setTimeout(() => {
+          els.arabic.innerText = currentZikr.arabic;
+          els.pronun.innerText = currentZikr.pronunciation;
+          els.meaning.innerText = currentZikr.meaning;
+          els.arabic.classList.toggle('text-primary', currentIndex === 0);
+          els.textContentArea.style.opacity = '1';
+        }, 150);
+
+        els.indicators.innerHTML = '';
+        zikrList.forEach((_, i) => {
+          const dot = document.createElement('div');
+          dot.className = `h-1.5 rounded-full transition-all duration-300 ${i === currentIndex ? 'w-3.5 bg-primary' : 'w-1.5 bg-slate-200 dark:bg-slate-700'}`;
+          els.indicators.appendChild(dot);
+        });
+        
+        updateCounterUI(true);
+      };
+
+      // Update Counter
+      const updateCounterUI = (isInitial = false) => {
+        els.counter.innerText = toBn(count);
+        els.targetTxt.innerText = toBn(target);
+        
+        const r = 90;
+        const circ = 2 * Math.PI * r;
+        els.progress.style.strokeDasharray = `${circ} ${circ}`;
+        
+        const prog = (count % target) / target;
+        const isTarget = count > 0 && count % target === 0;
+        
+        els.progress.style.strokeDashoffset = (isTarget && !isInitial) ? 0 : circ - (prog * circ);
+
+        if (isTarget) {
+            els.progress.classList.replace('text-primary', 'text-secondary');
+            els.progress.style.filter = 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.4))';
+        } else {
+            els.progress.classList.replace('text-secondary', 'text-primary');
+            els.progress.style.filter = 'drop-shadow(0 0 6px rgba(14, 165, 233, 0.3))';
+        }
+
+        counts[currentIndex] = count;
+        targets[currentIndex] = target;
+        localStorage.setItem('tasbeeh_v6_counts', JSON.stringify(counts));
+        localStorage.setItem('tasbeeh_v6_targets', JSON.stringify(targets));
+        localStorage.setItem('tasbeeh_v6_index', currentIndex);
+      };
+
+      // Navigation
+      const changeSlide = (newIndex) => {
+        counts[currentIndex] = count; 
+        currentIndex = newIndex < 0 ? zikrList.length - 1 : newIndex >= zikrList.length ? 0 : newIndex;
+        currentZikr = zikrList[currentIndex];
+        count = counts[currentIndex] || 0;
+        target = targets[currentIndex] || currentZikr.target;
+        
+        updateSliderUI();
+        if (navigator.vibrate) navigator.vibrate(10);
+      };
+
+      document.getElementById('prev-zikr-btn').addEventListener('click', () => changeSlide(currentIndex - 1));
+      document.getElementById('next-zikr-btn').addEventListener('click', () => changeSlide(currentIndex + 1));
+
+      // Audio
+      els.playBtn.addEventListener('click', () => {
+        if (isPlaying) {
+          els.audioPlayer.pause();
+          resetPlayIcon();
+        } else {
+          els.playBtn.innerHTML = '<div class="w-3 h-3 bg-white rounded-[2px] animate-pulse"></div>';
+          els.playBtn.classList.replace('bg-primary/10', 'bg-primary');
+          els.playBtn.classList.replace('text-primary', 'text-white');
+          isPlaying = true;
+          
+          els.audioPlayer.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(currentZikr.arabic)}&tl=ar&client=tw-ob`;
+          els.audioPlayer.play().catch(() => resetPlayIcon());
+        }
+      });
+
+      const resetPlayIcon = () => {
+        isPlaying = false;
+        els.playBtn.classList.replace('bg-primary', 'bg-primary/10');
+        els.playBtn.classList.replace('text-white', 'text-primary');
+        els.playBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>';
+      };
+      
+      els.audioPlayer.onended = resetPlayIcon;
+      els.audioPlayer.onerror = resetPlayIcon;
+
+      // Haptic & Sound
+      let audioCtx = null;
+      const playFeedback = (isTarget) => {
+        if (navigator.vibrate) navigator.vibrate(isTarget ? [30, 40, 30] : 20);
+
+        if (soundEnabled) {
+          try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            if (isTarget) {
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+              osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
+              gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            } else {
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+              osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.02);
+              gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.02);
+            }
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+          } catch (e) {}
+        }
+      };
+
+      // Tap Area
+      document.getElementById('tap-area').addEventListener('pointerdown', (e) => {
+        e.preventDefault(); 
+        count++;
+        playFeedback(count % target === 0);
+        
+        els.pulse.classList.remove('pulse-animation');
+        void els.pulse.offsetWidth;
+        els.pulse.classList.add('pulse-animation');
+        
+        updateCounterUI();
+      });
+
+      // Buttons
+      document.getElementById('target-btn').addEventListener('click', () => {
+        const tList = [33, 34, 100, 1000];
+        target = tList[(tList.indexOf(target) + 1) % tList.length];
+        updateCounterUI();
+        if (navigator.vibrate) navigator.vibrate(10);
+      });
+
+      const updateSoundUI = () => {
+        document.getElementById('sound-icon-container').innerHTML = soundEnabled 
+          ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>'
+          : '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" /></svg>';
+      };
+      
+      document.getElementById('sound-btn').addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem('tasbeeh_v6_sound', soundEnabled);
+        updateSoundUI();
+        if (soundEnabled && navigator.vibrate) navigator.vibrate(15);
+      });
+
+      // Reset Modal
+      const toggleResetModal = (show) => {
+        const modal = document.getElementById('reset-modal');
+        const content = document.getElementById('modal-content');
+        if (show) {
+          modal.classList.remove('hidden', 'pointer-events-none');
+          setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        } else {
+          modal.classList.add('opacity-0'); content.classList.add('scale-95');
+          setTimeout(() => modal.classList.add('hidden', 'pointer-events-none'), 200);
+        }
+      };
+
+      document.getElementById('reset-btn').addEventListener('click', () => toggleResetModal(true));
+      document.getElementById('cancel-reset').addEventListener('click', () => toggleResetModal(false));
+      document.getElementById('modal-backdrop').addEventListener('click', () => toggleResetModal(false));
+      document.getElementById('confirm-reset').addEventListener('click', () => { count = 0; updateCounterUI(); toggleResetModal(false); });
+
+      // List Modal
+      const toggleList = (show) => {
+        const modal = document.getElementById('zikr-list-modal');
+        const backdrop = document.getElementById('list-backdrop');
+        const content = document.getElementById('list-content');
+        
+        if (show) {
+          const container = document.getElementById('zikr-list-container');
+          container.innerHTML = '';
+          zikrList.forEach((zikr, i) => {
+            const item = document.createElement('div');
+            item.className = `px-3 py-2.5 rounded-xl mb-1 flex justify-between items-center cursor-pointer transition-colors ${i === currentIndex ? 'bg-primary/10 border border-primary/20' : 'hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent'}`;
+            item.innerHTML = `
+              <div>
+                <div class="font-bold text-[13px] ${i === currentIndex ? 'text-primary' : 'text-slate-800 dark:text-slate-200'}">${zikr.title}</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">${zikr.pronunciation}</div>
+              </div>
+              <div class="font-arabic text-lg ${i === currentIndex ? 'text-primary' : 'text-slate-600 dark:text-slate-400'}" dir="rtl">${zikr.arabic}</div>
+            `;
+            item.addEventListener('click', () => { changeSlide(i); toggleList(false); });
+            container.appendChild(item);
+          });
+          
+          modal.classList.remove('pointer-events-none');
+          backdrop.classList.remove('opacity-0', 'pointer-events-none');
+          content.classList.remove('translate-y-full');
+        } else {
+          backdrop.classList.add('opacity-0', 'pointer-events-none');
+          content.classList.add('translate-y-full');
+          setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+        }
+      };
+
+      document.getElementById('show-list-btn').addEventListener('click', () => toggleList(true));
+      document.getElementById('close-list-btn').addEventListener('click', () => toggleList(false));
+      document.getElementById('list-backdrop').addEventListener('click', () => toggleList(false));
+
+      // Init
+      updateSliderUI();
+      updateSoundUI();
+    });
+  </script>
+</body>
+</html>
+
