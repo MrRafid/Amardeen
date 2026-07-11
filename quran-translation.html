@@ -28,12 +28,8 @@
         .arabic-text { font-family: 'Amiri', serif; line-height: 1.8; }
         ::-webkit-scrollbar { display: none; }
         
-        /* Smooth Card Transition */
-        .v-card {
-            transition: background-color 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
-        }
+        .v-card { transition: background-color 0.4s ease, border-color 0.4s ease, transform 0.3s ease; }
 
-        /* Beautiful Highlight Active Card Style */
         .active-card {
             background-color: #f0fdfa !important;
             border-color: #5eead4 !important;
@@ -42,7 +38,6 @@
             z-index: 10;
         }
 
-        /* Animations */
         .btn-press:active { transform: scale(0.9); }
         .fade-in { animation: fadeIn 0.25s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -50,7 +45,7 @@
 </head>
 <body class="text-gray-800 pb-16">
 
-    <!-- Ultra Compact Header -->
+    <!-- Header -->
     <header class="bg-white sticky top-0 z-40 px-3 py-2.5 flex items-center gap-2.5 shadow-sm border-b border-gray-100">
         <button id="btn-back" class="hidden p-1.5 btn-press text-gray-600 bg-gray-50 rounded-full" onclick="navigateBack()">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
@@ -60,7 +55,6 @@
 
     <!-- Main Lists Section -->
     <main id="main-container">
-        <!-- Compact Segmented Control -->
         <div class="px-3 py-2 bg-white border-b border-gray-100" id="tabs-container">
             <div class="flex bg-gray-100 rounded-lg p-0.5">
                 <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-1.5 text-[13px] font-semibold rounded-md transition-colors text-gray-500">হোম</button>
@@ -89,7 +83,6 @@
 
     <!-- Reader Section -->
     <main id="reader-container" class="hidden relative">
-        <!-- Compact Info Bar -->
         <div class="sticky top-[45px] z-30 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
             <div class="flex justify-between items-center px-3 py-1.5">
                 <span id="reader-revelation" class="text-[10px] font-bold text-teal bg-teal-50 px-2 py-0.5 rounded">মাক্কী</span>
@@ -109,7 +102,7 @@
         </div>
     </main>
 
-    <!-- Ultra Compact Floating Player -->
+    <!-- Floating Player -->
     <div id="bottom-player" class="fixed bottom-2 left-2 right-2 bg-gray-900 text-white rounded-xl px-3 py-2 shadow-2xl z-50 flex items-center justify-between transition-transform transform translate-y-[150%] duration-300">
         <div class="flex flex-col truncate pr-2">
             <span id="player-title" class="font-bold text-[13px] truncate">আল ফাতিহা</span>
@@ -124,9 +117,7 @@
                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
             </button>
             <button id="btn-play-pause" onclick="togglePlayPause()" class="w-9 h-9 btn-press flex items-center justify-center rounded-full bg-teal-500 text-white shadow-md">
-                <!-- Play -->
                 <svg id="icon-play" class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                <!-- Pause -->
                 <svg id="icon-pause" class="w-4 h-4 hidden fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
             <button onclick="playNext(true)" class="p-1.5 btn-press text-gray-300 active:text-white">
@@ -135,7 +126,7 @@
         </div>
     </div>
 
-    <!-- SINGLE Audio Element for Rock Solid Background Stability -->
+    <!-- SINGLE Audio Element -->
     <audio id="main-audio" playsinline></audio>
 
     <script>
@@ -145,8 +136,10 @@
 
         let state = {
             surahs: [], paras: [], tab: 'surah',
-            queue: [], pIdx: -1, isPlaying: false, isFetching: false,
-            uId: null, uType: 'surah'
+            queue: [], pIdx: -1, isPlaying: false,
+            uId: null, uType: 'surah',
+            audioChunks: [], chunkIdx: 0,
+            isFetchingNext: false // প্রিলোডিং লক
         };
 
         const audioEl = document.getElementById('main-audio');
@@ -156,25 +149,21 @@
             status: document.getElementById('player-status')
         };
 
-        // --- Screen Wake Lock API (Keep screen ON) ---
+        // --- Wake Lock (Keep screen ON) ---
         let wakeLock = null;
         let idleTimer = null;
-        const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 Minutes
+        const IDLE_TIMEOUT = 30 * 60 * 1000;
 
         async function requestWakeLock() {
             if ('wakeLock' in navigator) {
                 try {
-                    if (!wakeLock) {
-                        wakeLock = await navigator.wakeLock.request('screen');
-                    }
-                } catch (err) { console.log("WakeLock error:", err); }
+                    if (!wakeLock) wakeLock = await navigator.wakeLock.request('screen');
+                } catch (err) {}
             }
         }
 
         function releaseWakeLock() {
-            if (wakeLock) {
-                wakeLock.release().then(() => { wakeLock = null; });
-            }
+            if (wakeLock) wakeLock.release().then(() => { wakeLock = null; });
         }
 
         function resetActivityTimer() {
@@ -314,12 +303,9 @@
             localStorage.setItem('qh_final', JSON.stringify(hist));
         }
 
-        // ==========================================
-        // Applying the Phonetic Dictionary (From corrections.js)
-        // ==========================================
+        // Applying the Phonetic Dictionary from corrections.js
         function fixPronunciationForTTS(text) {
             let fixedText = text;
-            // Check if AUDIO_CORRECTIONS is loaded from corrections.js
             if (typeof AUDIO_CORRECTIONS !== 'undefined') {
                 for (let word in AUDIO_CORRECTIONS) {
                     let regex = new RegExp(`(^|[\\s,।?!;:"'\\-\\[\\](){}\\ঃ])(${word})(?=[\\s,।?!;:"'\\-\\[\\](){}\\ঃ]|$)`, 'g');
@@ -327,6 +313,23 @@
                 }
             }
             return fixedText;
+        }
+
+        // --- SMART CHUNKING LOGIC: লম্বা আয়াতকে ছোট করে ভাগ করা ---
+        function chunkText(text, maxLength = 180) {
+            let chunks = [];
+            let words = text.split(' ');
+            let current = '';
+            for(let word of words) {
+                if((current + ' ' + word).length < maxLength) {
+                    current += (current ? ' ' : '') + word;
+                } else {
+                    if(current) chunks.push(current);
+                    current = word;
+                }
+            }
+            if(current) chunks.push(current);
+            return chunks;
         }
 
         async function fetchChap(id, type) {
@@ -376,39 +379,21 @@
             con.innerHTML = ''; ldr.classList.remove('hidden');
             
             try {
+                // নতুন সূরা ওপেন করলে queue একদম ক্লিয়ার করে শুধু ওই সূরাটি লোড হবে
                 state.queue = await fetchChap(id, type);
                 state.pIdx = -1;
                 ldr.classList.add('hidden');
                 
                 renderVerses(state.queue.filter(v => v.sId === id && v.type === type));
+                window.scrollTo(0, 0);
                 
                 if (state.queue.length > 0) {
                     playTrack(0);
                 }
-                preloadNextChapterSilently();
-
             } catch (e) {
                 ldr.classList.add('hidden');
                 con.innerHTML = `<div class="text-red-500 text-[12px] text-center bg-red-50 p-3 rounded mt-4">ডেটা লোড ব্যর্থ হয়েছে। ইন্টারনেট সংযোগ চেক করুন।</div>`;
             }
-        }
-
-        async function preloadNextChapterSilently() {
-            if(state.isFetching || state.queue.length === 0) return;
-            state.isFetching = true;
-            
-            const currentLastTrack = state.queue[state.queue.length - 1];
-            const nextId = currentLastTrack.sId + 1;
-            const limit = currentLastTrack.type === 'surah' ? 114 : 30;
-            
-            if (nextId <= limit) {
-                try {
-                    const nextChapData = await fetchChap(nextId, currentLastTrack.type);
-                    const newItems = nextChapData.filter(n => !state.queue.some(q => q.id === n.id));
-                    state.queue = state.queue.concat(newItems);
-                } catch(e) {}
-            }
-            state.isFetching = false;
         }
 
         function renderVerses(list) {
@@ -437,14 +422,41 @@
             document.getElementById('verses-container').innerHTML = h;
         }
 
+        // --- SMART LIGHTWEIGHT PRELOADING ---
+        async function preloadNextChapterSilently() {
+            if(state.isFetchingNext || state.queue.length === 0) return;
+            
+            const currentLastTrack = state.queue[state.queue.length - 1];
+            const nextId = currentLastTrack.sId + 1;
+            const limit = currentLastTrack.type === 'surah' ? 114 : 30;
+            
+            // যদি পরের সূরাটি অলরেডি Queue তে থাকে, তবে আর লোড করবে না
+            if (state.queue.some(q => q.sId === nextId)) return;
+
+            if (nextId <= limit) {
+                state.isFetchingNext = true;
+                try {
+                    const nextChapData = await fetchChap(nextId, currentLastTrack.type);
+                    // নিশ্চিত হওয়া যেন কোনো ডুপ্লিকেট না ঢোকে
+                    const newItems = nextChapData.filter(n => !state.queue.some(q => q.id === n.id));
+                    state.queue = state.queue.concat(newItems);
+                } catch(e) {}
+                state.isFetchingNext = false;
+            }
+        }
+
+        // --- GAPLESS AUDIO ENGINE ---
         function setupAudioEngine() {
-            audioEl.addEventListener('ended', () => playNext(false));
+            // একটি চ্যাংক (আয়াতের অংশ) শেষ হলে
+            audioEl.addEventListener('ended', () => {
+                state.chunkIdx++;
+                playCurrentChunk();
+            });
             
             audioEl.addEventListener('error', (e) => { 
-                if(state.isPlaying) {
-                    dom.status.classList.remove('hidden'); dom.status.textContent = 'নেটওয়ার্ক এরর...';
-                    setTimeout(() => playNext(false), 2000); 
-                }
+                state.isPlaying = false;
+                dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
+                dom.status.classList.remove('hidden'); dom.status.textContent = 'অডিও ত্রুটি';
             });
 
             audioEl.addEventListener('waiting', () => { dom.status.classList.remove('hidden'); });
@@ -473,22 +485,42 @@
             state.pIdx = idx; 
             const t = state.queue[idx];
             
+            // যদি নতুন সূরায় চলে যায় (অটো নেক্সট হওয়ার সময়), তাহলে UI আপডেট করে একদম উপরে স্ক্রল করবে
             if (t.sId !== state.uId && document.visibilityState === 'visible') {
                 updateReaderHeader(t.sId, t.type);
                 renderVerses(state.queue.filter(v => v.sId === t.sId && v.type === t.type));
+                window.scrollTo(0, 0); // নতুন সূরা শুরু হলে স্ক্রল টপে যাবে
             }
 
-            const ttsUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=bn&q=${encodeURIComponent(t.tBnAudio)}`;
+            updateUI(t, true); 
+
+            // টেক্সটকে ছোট অংশে ভাগ করা
+            state.audioChunks = chunkText(t.tBnAudio);
+            state.chunkIdx = 0;
             
+            playCurrentChunk();
+
+            // প্রিলোডিং লজিক: বর্তমান সূরার শেষ ২০ আয়াতের মধ্যে চলে আসলে পরের সূরা প্রিলোড করবে
+            const currentSurahVerses = state.queue.filter(v => v.sId === t.sId);
+            const currentIndexInSurah = currentSurahVerses.findIndex(v => v.id === t.id);
+            if (currentSurahVerses.length - currentIndexInSurah < 20) {
+                preloadNextChapterSilently();
+            }
+        }
+
+        function playCurrentChunk() {
+            if(state.chunkIdx >= state.audioChunks.length) {
+                // আয়াতের সব অংশ পড়া শেষ হলে পরের আয়াতে যাও
+                playNext(false);
+                return;
+            }
+
+            const ttsUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=bn&q=${encodeURIComponent(state.audioChunks[state.chunkIdx])}`;
             audioEl.src = ttsUrl;
             audioEl.play().catch(e => {
-                console.log("Audio Play Error:", e);
-                setTimeout(() => playNext(false), 1500);
+                state.isPlaying = false;
+                dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
             });
-            
-            updateUI(t, true); 
-            
-            if (state.queue.length - idx < 20) preloadNextChapterSilently();
         }
 
         function togglePlayPause() {
@@ -502,18 +534,39 @@
             resetActivityTimer();
         }
 
-        function playNext(userTriggered) {
+        async function playNext(userTriggered) {
             if (state.pIdx + 1 < state.queue.length) {
                 playTrack(state.pIdx + 1);
-            } else if (!userTriggered) {
-                state.isPlaying = false;
-                dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
-                releaseWakeLock(); 
+            } else {
+                // যদি queue শেষ হয়ে যায় (মানে সূরা শেষ কিন্তু পরেরটা এখনো প্রিলোড হয়নি)
+                const currentTrack = state.queue[state.pIdx];
+                const limit = currentTrack.type === 'surah' ? 114 : 30;
+                
+                if (currentTrack.sId + 1 <= limit && !userTriggered) {
+                    dom.status.classList.remove('hidden');
+                    dom.status.textContent = 'পরের অধ্যায় লোড হচ্ছে...';
+                    await preloadNextChapterSilently();
+                    
+                    if (state.pIdx + 1 < state.queue.length) {
+                        playTrack(state.pIdx + 1);
+                    } else {
+                        stopPlaying();
+                    }
+                } else {
+                    stopPlaying();
+                }
             }
         }
 
         function playPrev() {
             if (state.pIdx - 1 >= 0) playTrack(state.pIdx - 1);
+        }
+
+        function stopPlaying() {
+            state.isPlaying = false;
+            dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
+            dom.status.classList.add('hidden');
+            releaseWakeLock();
         }
 
         function updateUI(t, doScroll) {
