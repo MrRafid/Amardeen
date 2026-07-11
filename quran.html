@@ -2,12 +2,9 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>আল কুরআন</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     
@@ -15,172 +12,162 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { teal: { DEFAULT: '#1a897e', light: '#e8f4f3', active: '#f0f9f8' } },
-                    fontFamily: { bangla: ['Noto Sans Bengali', 'sans-serif'], arabic: ['Amiri', 'serif'] },
-                    animation: { 'fade-in': 'fadeIn 0.3s ease-out forwards' }
+                    colors: { teal: { DEFAULT: '#1a897e', light: '#eef6f5' } },
+                    fontFamily: { bangla: ['Noto Sans Bengali', 'sans-serif'], arabic: ['Amiri', 'serif'] }
                 }
             }
         }
     </script>
     <style>
-        body { font-family: 'Noto Sans Bengali', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #f7f9fa; }
+        body { font-family: 'Noto Sans Bengali', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #f7f9f9; }
         .arabic-text { font-family: 'Amiri', serif; line-height: 1.8; }
         ::-webkit-scrollbar { display: none; }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-list > div { opacity: 0; animation: fadeIn 0.4s ease-out forwards; }
-        
-        /* Minimal Islamic Star */
+        /* Compact Hexagon */
         .islamic-star {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23e8f4f3" d="M50 0 L65 15 L100 15 L85 50 L100 85 L65 85 L50 100 L35 85 L0 85 L15 50 L0 15 L35 15 Z"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23eef6f5" d="M50 0 L65 15 L100 15 L85 50 L100 85 L65 85 L50 100 L35 85 L0 85 L15 50 L0 15 L35 15 Z"/></svg>');
             background-size: cover; background-position: center;
         }
 
-        /* Active Playing Card Style */
-        .playing-card {
-            background-color: #f0f9f8 !important;
-            border-color: #a7d7d2 !important;
-            box-shadow: 0 4px 12px rgba(26, 137, 126, 0.1) !important;
-            transform: scale(1.01);
-            transition: all 0.3s ease-in-out;
-            z-index: 10;
+        /* Minimal Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.25s ease-out forwards; }
+        
+        .active-card {
+            background-color: #f4fafa !important;
+            border-color: #c4e4e1 !important;
+            transform: scale(1.005);
         }
-
-        /* Playing Equalizer Animation */
-        .equalizer { display: none; align-items: flex-end; gap: 2px; height: 12px; }
-        .playing-card .equalizer { display: flex; }
-        .equalizer span { width: 3px; background-color: #1a897e; border-radius: 2px; animation: bounce 1s infinite ease-in-out; }
-        .equalizer span:nth-child(2) { animation-delay: 0.2s; }
-        .equalizer span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce { 0%, 100% { height: 4px; } 50% { height: 12px; } }
     </style>
 </head>
 <body class="text-gray-800 pb-20">
 
-    <!-- Header -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 px-3 py-3 flex items-center gap-3 shadow-sm border-b border-gray-100">
-        <button id="btn-back" class="text-gray-500 hidden p-1.5 active:scale-95 transition-transform bg-gray-50 rounded-full" onclick="navigateBack()">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+    <!-- Compact Header -->
+    <header class="bg-white sticky top-0 z-40 px-3 py-2.5 flex items-center gap-3 shadow-[0_1px_4px_rgba(0,0,0,0.03)] border-b border-gray-100">
+        <button id="btn-back" class="hidden p-1 active:scale-90 transition-transform text-gray-500" onclick="navigateBack()">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <h1 id="header-title" class="text-[17px] font-semibold text-gray-800">আল কুরআন</h1>
+        <h1 id="header-title" class="text-[16px] font-semibold text-gray-800">আল কুরআন</h1>
     </header>
 
-    <!-- Main Lists View -->
+    <!-- Main Container -->
     <main id="main-container">
-        <!-- Tabs -->
-        <div class="px-3 pt-3 pb-2 bg-white sticky top-[53px] z-30 shadow-[0_2px_10px_rgba(0,0,0,0.02)]" id="tabs-container">
-            <div class="flex gap-1 justify-center bg-gray-100/80 p-1 rounded-full border border-gray-200/60">
-                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-1.5 text-[14px] font-medium rounded-full transition-all text-gray-500">হোম</button>
-                <button onclick="switchTab('surah')" id="tab-surah" class="flex-1 py-1.5 text-[14px] font-medium rounded-full transition-all bg-teal text-white shadow-sm">সূরা</button>
-                <button onclick="switchTab('para')" id="tab-para" class="flex-1 py-1.5 text-[14px] font-medium rounded-full transition-all text-gray-500">পারা</button>
+        <!-- Compact Tabs -->
+        <div class="px-3 py-2.5 bg-white shadow-sm border-b border-gray-50" id="tabs-container">
+            <div class="flex justify-center bg-gray-50/80 p-1 rounded-full border border-gray-100">
+                <button onclick="switchTab('home')" id="tab-home" class="flex-1 py-1 text-[13px] font-medium rounded-full transition-colors text-gray-500">হোম</button>
+                <button onclick="switchTab('surah')" id="tab-surah" class="flex-1 py-1 text-[13px] font-medium rounded-full transition-colors bg-teal text-white shadow-sm">সূরা</button>
+                <button onclick="switchTab('para')" id="tab-para" class="flex-1 py-1 text-[13px] font-medium rounded-full transition-colors text-gray-500">পারা</button>
             </div>
         </div>
 
-        <div class="px-3 py-3 hidden animate-list" id="view-home">
-            <div id="history-list" class="flex flex-col gap-2"></div>
-            <p id="empty-history" class="text-[13px] text-gray-400 text-center mt-10">কোনো হিস্ট্রি নেই</p>
+        <div class="px-3 py-2 hidden fade-in" id="view-home">
+            <div id="history-list" class="flex flex-col gap-1.5"></div>
+            <p id="empty-history" class="text-center text-[12px] text-gray-400 mt-6 hidden">কোনো হিস্ট্রি নেই</p>
         </div>
 
-        <div class="px-3 py-3 animate-list" id="view-surah">
-            <div id="surah-list" class="flex flex-col gap-2">
-                <div class="text-center py-10 text-teal"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto"></i></div>
-            </div>
-        </div>
-
-        <div class="px-3 py-3 hidden animate-list" id="view-para">
-            <div id="para-list" class="flex flex-col gap-2"></div>
-        </div>
-    </main>
-
-    <!-- Reader View -->
-    <main id="reader-container" class="hidden relative">
-        <div id="reader-header" class="sticky top-[53px] z-30 bg-teal-light/95 backdrop-blur-sm border-b border-teal-200/50 shadow-sm transition-all duration-300">
-            <div class="flex justify-between items-center px-4 py-2">
-                <span id="reader-revelation" class="text-[10px] font-medium text-teal px-2 py-0.5 bg-white/80 rounded-md">মাক্কী</span>
-                <div class="text-center">
-                    <div id="reader-title" class="font-bold text-[15px] text-teal leading-tight">আল ফাতিহা</div>
-                    <div id="reader-subtitle" class="text-[10px] text-teal/70">সূচনা</div>
+        <div class="px-3 py-2 fade-in" id="view-surah">
+            <div id="surah-list" class="flex flex-col gap-1.5">
+                <div class="text-center py-8 text-teal">
+                    <svg class="w-5 h-5 animate-spin mx-auto" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </div>
-                <span id="reader-count" class="text-[10px] font-medium text-teal px-2 py-0.5 bg-white/80 rounded-md">৭ আয়াত</span>
             </div>
         </div>
 
-        <!-- Verses -->
-        <div id="verses-container" class="px-2 py-3 flex flex-col gap-2.5"></div>
-        
-        <div id="reader-loading" class="text-center py-12 text-teal hidden flex-col items-center">
-            <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
-            <p class="mt-2 text-[13px] font-medium">আয়াত প্রস্তুত হচ্ছে...</p>
+        <div class="px-3 py-2 hidden fade-in" id="view-para">
+            <div id="para-list" class="flex flex-col gap-1.5"></div>
         </div>
     </main>
 
-    <!-- Floating Minimal Player -->
-    <div id="bottom-player" class="fixed bottom-3 left-3 right-3 bg-white border border-teal-100 rounded-2xl px-4 py-3 shadow-[0_8px_20px_rgba(26,137,126,0.15)] z-50 flex items-center justify-between transition-transform transform translate-y-[150%] duration-300">
-        <div class="flex flex-col flex-1 truncate pr-2">
-            <span id="player-title" class="font-bold text-[14px] text-teal truncate">আল ফাতিহা</span>
-            <span id="player-subtitle" class="text-[11px] text-gray-500 font-medium">আয়াত ১</span>
+    <!-- Reader Container -->
+    <main id="reader-container" class="hidden relative">
+        <div class="sticky top-[45px] z-30 bg-teal-light/95 backdrop-blur border-b border-teal-200/50">
+            <div class="flex justify-between items-center px-3 py-1.5">
+                <span id="reader-revelation" class="text-[9px] font-semibold text-teal px-2 py-0.5 bg-white rounded shadow-sm">মাক্কী</span>
+                <div class="text-center flex flex-col items-center">
+                    <span id="reader-title" class="font-bold text-[14px] text-teal leading-tight">আল ফাতিহা</span>
+                    <span id="reader-subtitle" class="text-[10px] text-teal/80 mt-0.5">সূচনা</span>
+                </div>
+                <span id="reader-count" class="text-[9px] font-semibold text-teal px-2 py-0.5 bg-white rounded shadow-sm">৭ আয়াত</span>
+            </div>
         </div>
-        <button id="btn-play-pause" onclick="togglePlayPause()" class="w-11 h-11 shrink-0 flex items-center justify-center rounded-full bg-teal text-white shadow-md active:scale-90 transition-transform">
-            <i data-lucide="pause" id="icon-play-pause" class="w-5 h-5 fill-current"></i>
+
+        <div id="verses-container" class="px-2.5 py-2.5 flex flex-col gap-2"></div>
+        
+        <div id="reader-loading" class="text-center py-10 text-teal hidden flex-col items-center">
+            <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <p class="mt-2 text-[12px]">লোড হচ্ছে...</p>
+        </div>
+    </main>
+
+    <!-- Sleek Bottom Player -->
+    <div id="bottom-player" class="fixed bottom-3 left-3 right-3 bg-white border border-gray-100 rounded-xl px-3 py-2 shadow-[0_4px_15px_rgba(0,0,0,0.05)] z-50 flex items-center justify-between transition-transform transform translate-y-[150%] duration-300">
+        <div class="flex flex-col truncate pr-2">
+            <span id="player-title" class="font-bold text-[13px] text-gray-800 truncate">আল ফাতিহা</span>
+            <span id="player-subtitle" class="text-[10px] text-teal font-medium mt-0.5">আয়াত ১</span>
+        </div>
+        
+        <!-- Toggle Button (Instant SVG Change) -->
+        <button id="btn-play-pause" onclick="togglePlayPause()" class="w-9 h-9 shrink-0 flex items-center justify-center rounded-full bg-teal text-white shadow active:scale-90 transition-transform">
+            <!-- Play Icon -->
+            <svg id="icon-play" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <!-- Pause Icon (Hidden initially) -->
+            <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
         </button>
     </div>
 
-    <!-- Background Double Buffering Engines -->
+    <!-- Background Audio Elements -->
     <audio id="audio-1" preload="auto"></audio>
     <audio id="audio-2" preload="auto"></audio>
 
     <script>
-        const API_BASE = 'https://api.quran.com/api/v4';
-        const BANGLA_DIGITS = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-        const toBnNum = num => num.toString().replace(/\d/g, d => BANGLA_DIGITS[d]);
+        const API = 'https://api.quran.com/api/v4';
+        const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        const tbn = num => num.toString().replace(/\d/g, d => bnDigits[d]);
 
-        // Deep State Management
-        let state = {
-            surahs: [], paras: [], currentTab: 'surah', 
-            playlist: [], nextPlaylist: null, // For gapless chapter transition
-            currentAudioIndex: -1, activeAudioTag: 1, isPlaying: false,
-            currentId: 1, currentType: 'surah', currentMeta: null,
-            needsUIRender: false // For background UI sync
+        let st = {
+            surahs: [], paras: [], tab: 'surah',
+            queue: [], pIdx: -1, aTag: 1, isP: false, isF: false,
+            uId: null, uType: 'surah'
         };
 
-        const elements = {
-            audio1: document.getElementById('audio-1'), audio2: document.getElementById('audio-2'),
-            bottomPlayer: document.getElementById('bottom-player'), iconPlayPause: document.getElementById('icon-play-pause')
+        const dom = {
+            a1: document.getElementById('audio-1'), a2: document.getElementById('audio-2'),
+            p: document.getElementById('bottom-player'),
+            iPlay: document.getElementById('icon-play'), iPause: document.getElementById('icon-pause')
         };
 
         async function init() {
-            lucide.createIcons();
-            setupAudioEngine();
-            generateParas();
-            loadHistory();
-            await fetchSurahs();
+            setupAudio();
+            genParas();
+            loadHist();
+            await loadSurahs();
             switchTab('surah');
 
-            // Sync UI when returning from background
             document.addEventListener("visibilitychange", () => {
-                if(document.visibilityState === 'visible' && state.needsUIRender) {
-                    renderVerses(state.playlist, state.currentMeta);
-                    updatePlayerUI(state.playlist[state.currentAudioIndex]);
-                    state.needsUIRender = false;
+                if(document.visibilityState === 'visible' && st.pIdx >= 0) {
+                    const track = st.queue[st.pIdx];
+                    if(track.sId !== st.uId) renderReaderUI(track.sId, track.type);
+                    else updatePlayerUI(track, false);
                 }
             });
         }
 
-        // --- NAVIGATION ---
-        function switchTab(tab) {
-            state.currentTab = tab;
-            ['home', 'surah', 'para'].forEach(t => {
-                const btn = document.getElementById(`tab-${t}`);
-                const view = document.getElementById(`view-${t}`);
-                if (t === tab) {
-                    btn.className = "flex-1 py-1.5 text-[14px] font-medium rounded-full transition-all bg-teal text-white shadow-sm";
-                    view.classList.remove('hidden');
+        // --- UI Nav ---
+        function switchTab(t) {
+            st.tab = t;
+            ['home', 'surah', 'para'].forEach(x => {
+                const b = document.getElementById(`tab-${x}`);
+                const v = document.getElementById(`view-${x}`);
+                if (x === t) {
+                    b.className = "flex-1 py-1 text-[13px] font-medium rounded-full transition-colors bg-teal text-white shadow-sm";
+                    v.classList.remove('hidden');
                 } else {
-                    btn.className = "flex-1 py-1.5 text-[14px] font-medium rounded-full transition-all text-gray-500 bg-transparent";
-                    view.classList.add('hidden');
+                    b.className = "flex-1 py-1 text-[13px] font-medium rounded-full transition-colors text-gray-500 bg-transparent";
+                    v.classList.add('hidden');
                 }
             });
-            if(tab === 'home') loadHistory();
+            if(t === 'home') loadHist();
         }
 
         function navigateBack() {
@@ -188,372 +175,289 @@
             document.getElementById('reader-container').classList.add('hidden');
             document.getElementById('btn-back').classList.add('hidden');
             document.getElementById('header-title').textContent = "আল কুরআন";
-            pauseCurrentAudio();
-            elements.bottomPlayer.classList.add('translate-y-[150%]');
-            if(state.currentTab === 'home') loadHistory();
+            if(st.tab === 'home') loadHist();
         }
 
-        // --- INITIAL DATA FETCH ---
-        async function fetchSurahs() {
-            if(sessionStorage.getItem('q_surahs')) {
-                state.surahs = JSON.parse(sessionStorage.getItem('q_surahs'));
-                renderSurahs(state.surahs);
-                return;
+        // --- Data Fetch ---
+        async function loadSurahs() {
+            if(localStorage.getItem('qs3')) {
+                st.surahs = JSON.parse(localStorage.getItem('qs3'));
+                renderSurahs(st.surahs); return;
             }
             try {
-                const res = await fetch(`${API_BASE}/chapters?language=bn`);
-                const data = await res.json();
-                state.surahs = data.chapters;
-                sessionStorage.setItem('q_surahs', JSON.stringify(state.surahs));
-                renderSurahs(state.surahs);
-            } catch (error) {
-                document.getElementById('surah-list').innerHTML = `<p class="text-red-500 text-[13px] text-center">ডেটা লোড ব্যর্থ। ইন্টারনেট চেক করুন।</p>`;
-            }
+                const res = await fetch(`${API}/chapters?language=bn`);
+                st.surahs = (await res.json()).chapters;
+                localStorage.setItem('qs3', JSON.stringify(st.surahs));
+                renderSurahs(st.surahs);
+            } catch(e) { document.getElementById('surah-list').innerHTML = `<p class="text-red-500 text-[12px] text-center">ডেটা লোড ব্যর্থ।</p>`; }
         }
 
-        function generateParas() {
-            for(let i=1; i<=30; i++) state.paras.push({ id: i, name: `পারা ${toBnNum(i)}` });
-            renderParas(state.paras);
+        function genParas() {
+            for(let i=1; i<=30; i++) st.paras.push({ id: i, name: `পারা ${tbn(i)}` });
+            renderParas(st.paras);
         }
 
+        // --- Compact Rendering ---
         function renderSurahs(surahs) {
-            let html = '';
-            surahs.forEach((surah, index) => {
-                html += `
-                <div onclick="openReader(${surah.id}, 'surah')" class="bg-white rounded-xl shadow-sm border border-gray-100/50 p-2.5 flex items-center justify-between cursor-pointer active:bg-teal-50 transition-colors" style="animation-delay: ${index * 0.02}s">
+            let h = '';
+            surahs.forEach((s) => {
+                h += `
+                <div onclick="openRdr(${s.id}, 'surah')" class="bg-white rounded-lg border border-gray-100 p-2.5 flex items-center justify-between cursor-pointer active:bg-teal-50 transition-colors">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 islamic-star flex items-center justify-center font-bold text-teal text-[13px] shrink-0 pt-0.5 shadow-sm">${toBnNum(surah.id)}</div>
+                        <div class="w-8 h-8 islamic-star flex items-center justify-center font-bold text-teal text-[11px] shrink-0">${tbn(s.id)}</div>
                         <div class="flex flex-col">
-                            <span class="font-semibold text-[15px] text-gray-800 leading-tight">${surah.name_complex || surah.name_arabic}</span>
-                            <span class="text-[11px] text-gray-400 mt-0.5">${surah.translated_name.name} • ${toBnNum(surah.verses_count)} আয়াত</span>
+                            <span class="font-medium text-[14px] leading-tight text-gray-800">${s.name_complex || s.name_arabic}</span>
+                            <span class="text-[10px] text-gray-400 mt-0.5">${s.translated_name.name} • ${tbn(s.verses_count)} আয়াত</span>
                         </div>
                     </div>
-                    <div class="text-teal text-xl arabic-text font-bold pr-2 opacity-90">${surah.name_arabic}</div>
+                    <div class="text-teal text-[18px] arabic-text font-bold pr-1">${s.name_arabic}</div>
                 </div>`;
             });
-            document.getElementById('surah-list').innerHTML = html;
+            document.getElementById('surah-list').innerHTML = h;
         }
 
         function renderParas(paras) {
-            let html = '';
-            paras.forEach((para, index) => {
-                html += `
-                <div onclick="openReader(${para.id}, 'para')" class="bg-white rounded-xl shadow-sm border border-gray-100/50 p-3 flex items-center justify-between cursor-pointer active:bg-teal-50 transition-colors" style="animation-delay: ${index * 0.02}s">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 islamic-star flex items-center justify-center font-bold text-teal text-[13px] shrink-0 pt-0.5 shadow-sm">${toBnNum(para.id)}</div>
-                        <span class="font-semibold text-[15px] text-gray-800">${para.name}</span>
-                    </div>
-                    <i data-lucide="chevron-right" class="text-teal/40 w-5 h-5"></i>
+            let h = '';
+            paras.forEach((p) => {
+                h += `
+                <div onclick="openRdr(${p.id}, 'para')" class="bg-white rounded-lg border border-gray-100 p-2.5 flex items-center gap-3 cursor-pointer active:bg-teal-50 transition-colors">
+                    <div class="w-8 h-8 islamic-star flex items-center justify-center font-bold text-teal text-[11px] shrink-0">${tbn(p.id)}</div>
+                    <span class="font-medium text-[14px] text-gray-800">${p.name}</span>
                 </div>`;
             });
-            document.getElementById('para-list').innerHTML = html;
-            lucide.createIcons();
+            document.getElementById('para-list').innerHTML = h;
         }
 
-        // --- HISTORY ---
-        function saveToHistory(id, type) {
-            let history = JSON.parse(localStorage.getItem('q_hist') || '[]');
-            history = history.filter(h => h.id !== id || h.type !== type);
-            history.unshift({id, type});
-            if(history.length > 8) history.pop();
-            localStorage.setItem('q_hist', JSON.stringify(history));
+        function saveHist(id, type) {
+            let hist = JSON.parse(localStorage.getItem('qh3') || '[]');
+            hist = hist.filter(h => h.id !== id || h.type !== type);
+            hist.unshift({id, type});
+            if(hist.length > 10) hist.pop();
+            localStorage.setItem('qh3', JSON.stringify(hist));
         }
 
-        function loadHistory() {
-            let history = JSON.parse(localStorage.getItem('q_hist') || '[]');
+        function loadHist() {
+            let hist = JSON.parse(localStorage.getItem('qh3') || '[]');
             const list = document.getElementById('history-list');
-            if(history.length === 0) {
-                list.innerHTML = '';
-                return document.getElementById('empty-history').classList.remove('hidden');
-            }
+            const empty = document.getElementById('empty-history');
             
-            document.getElementById('empty-history').classList.add('hidden');
-            let html = '';
-            history.forEach((h, index) => {
-                const item = h.type === 'surah' ? state.surahs.find(s => s.id === h.id) : state.paras.find(p => p.id === h.id);
+            if(!hist.length) { list.innerHTML = ''; empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+            
+            let h = '';
+            hist.forEach((x) => {
+                const item = x.type === 'surah' ? st.surahs.find(s => s.id === x.id) : st.paras.find(p => p.id === x.id);
                 if(!item) return;
-                const isSurah = h.type === 'surah';
-                html += `
-                <div onclick="openReader(${item.id}, '${h.type}')" class="bg-white rounded-xl shadow-sm border border-gray-100/50 p-2.5 flex items-center gap-3 cursor-pointer active:bg-teal-50" style="animation-delay: ${index * 0.05}s">
-                    <div class="w-10 h-10 islamic-star flex items-center justify-center font-bold text-teal text-[13px] shrink-0 pt-0.5">${toBnNum(item.id)}</div>
+                h += `
+                <div onclick="openRdr(${item.id}, '${x.type}')" class="bg-white rounded-lg border border-gray-100 p-2.5 flex items-center gap-3 cursor-pointer active:bg-teal-50">
+                    <div class="w-8 h-8 islamic-star flex items-center justify-center font-bold text-teal text-[11px] shrink-0">${tbn(item.id)}</div>
                     <div class="flex flex-col">
-                        <span class="font-semibold text-[15px]">${isSurah ? (item.name_complex || item.name_arabic) : item.name}</span>
-                        <span class="text-[11px] text-gray-400">${isSurah ? item.translated_name.name : 'পারা'}</span>
+                        <span class="font-medium text-[14px]">${x.type === 'surah' ? (item.name_complex || item.name_arabic) : item.name}</span>
+                        <span class="text-[10px] text-gray-400">${x.type === 'surah' ? item.translated_name.name : 'পারা'}</span>
                     </div>
                 </div>`;
             });
-            list.innerHTML = html;
+            list.innerHTML = h;
         }
 
-        // --- DATA ENGINE (Preloading & Gapless) ---
-        async function fetchPlaylistData(id, type, meta) {
-            let allVerses = [];
-            let page = 1; let totalPages = 1;
-            const endpoint = type === 'surah' ? `verses/by_chapter/${id}` : `verses/by_juz/${id}`;
-
-            while (page <= totalPages) {
-                const res = await fetch(`${API_BASE}/${endpoint}?language=bn&words=false&translations=161&fields=text_uthmani&audio=7&per_page=100&page=${page}`);
-                if(!res.ok) throw new Error("API Error");
-                const data = await res.json();
-                allVerses = allVerses.concat(data.verses);
-                totalPages = data.pagination.total_pages;
-                page++;
+        // --- Queue Engine ---
+        async function fetchChap(id, type) {
+            const meta = type === 'surah' ? st.surahs.find(s=>s.id===id) : st.paras.find(p=>p.id===id);
+            if(!meta) return [];
+            let vs = [], p = 1, tP = 1;
+            const ep = type === 'surah' ? `verses/by_chapter/${id}` : `verses/by_juz/${id}`;
+            while (p <= tP) {
+                const res = await fetch(`${API}/${ep}?language=bn&words=false&translations=161&fields=text_uthmani&audio=7&per_page=100&page=${p}`);
+                if(!res.ok) break;
+                const d = await res.json();
+                vs = vs.concat(d.verses);
+                tP = d.pagination.total_pages; p++;
             }
-
-            return allVerses.map((v, i) => ({
-                id: v.id, ayahNum: v.verse_number, textAr: v.text_uthmani, textBn: v.translations[0].text,
+            return vs.map(v => ({
+                id: v.id, aNum: v.verse_number, tAr: v.text_uthmani, tBn: v.translations[0].text,
                 url: v.audio?.url ? (v.audio.url.startsWith('//') ? 'https:'+v.audio.url : (v.audio.url.startsWith('http') ? v.audio.url : 'https://verses.quran.com/'+v.audio.url)) : null,
-                surahName: type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name, 
-                globalIndex: i
-            }));
+                sName: type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name, 
+                sId: id, type: type
+            })).filter(v => v.url);
         }
 
-        async function openReader(id, type) {
-            const meta = type === 'surah' ? state.surahs.find(s=>s.id===id) : state.paras.find(p=>p.id===id);
-            if(!meta) return;
+        async function openRdr(id, type) {
+            saveHist(id, type);
+            setHeaderTexts(id, type);
+            const con = document.getElementById('verses-container');
+            const ldr = document.getElementById('reader-loading');
+            con.innerHTML = ''; ldr.classList.remove('hidden'); ldr.style.display = 'flex';
+            
+            try {
+                st.queue = await fetchChap(id, type);
+                st.pIdx = -1; 
+                ldr.classList.add('hidden'); ldr.style.display = 'none';
+                renderVerses(st.queue);
+                fetchNextChapBg();
+            } catch (e) {
+                ldr.style.display = 'none';
+                con.innerHTML = `<div class="text-red-500 text-[12px] text-center p-2">লোড ব্যর্থ।</div>`;
+            }
+        }
 
-            state.currentId = id; state.currentType = type; state.currentMeta = meta;
-            state.nextPlaylist = null; // Reset preloaded data
-
+        function setHeaderTexts(id, type) {
+            const meta = type === 'surah' ? st.surahs.find(s=>s.id===id) : st.paras.find(p=>p.id===id);
+            st.uId = id; st.uType = type;
             document.getElementById('main-container').classList.add('hidden');
             document.getElementById('reader-container').classList.remove('hidden');
             document.getElementById('btn-back').classList.remove('hidden');
             
-            // Set Header Texts
             document.getElementById('header-title').textContent = type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name;
             document.getElementById('reader-title').textContent = type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name;
             document.getElementById('reader-subtitle').textContent = type === 'surah' ? meta.translated_name.name : 'আল কুরআন';
             document.getElementById('reader-revelation').textContent = type === 'surah' ? (meta.revelation_place === 'makkah' ? 'মাক্কী' : 'মাদানী') : '';
-            document.getElementById('reader-count').textContent = type === 'surah' ? `${toBnNum(meta.verses_count)} আয়াত` : '';
+            document.getElementById('reader-count').textContent = type === 'surah' ? `${tbn(meta.verses_count)} আয়াত` : '';
             document.getElementById('reader-revelation').style.display = type === 'para' ? 'none' : 'block';
             document.getElementById('reader-count').style.display = type === 'para' ? 'none' : 'block';
-
-            saveToHistory(id, type);
-            
-            const container = document.getElementById('verses-container');
-            const loading = document.getElementById('reader-loading');
-            container.innerHTML = '';
-            loading.classList.remove('hidden'); loading.style.display = 'flex';
-
-            try {
-                state.playlist = await fetchPlaylistData(id, type, meta);
-                loading.classList.add('hidden'); loading.style.display = 'none';
-                renderVerses(state.playlist, meta);
-                
-                // PRELOAD NEXT CHAPTER IN BACKGROUND IMMIDIATELY
-                preloadNextChapterData();
-            } catch (error) {
-                loading.style.display = 'none';
-                container.innerHTML = `<div class="text-red-500 text-[13px] text-center bg-red-50 p-3 rounded-lg border border-red-100">ডেটা লোড করতে সমস্যা হয়েছে।</div>`;
-            }
         }
 
-        async function preloadNextChapterData() {
-            const nextId = state.currentId + 1;
-            const limit = state.currentType === 'surah' ? 114 : 30;
-            if (nextId <= limit) {
-                const nextMeta = state.currentType === 'surah' ? state.surahs.find(s=>s.id===nextId) : state.paras.find(p=>p.id===nextId);
-                try {
-                    state.nextPlaylist = await fetchPlaylistData(nextId, state.currentType, nextMeta);
-                    console.log("Next chapter preloaded in memory for gapless playback");
-                } catch(e) { console.log("Failed to preload next chapter", e); }
-            }
+        function renderReaderUI(id, type) {
+            setHeaderTexts(id, type);
+            renderVerses(st.queue.filter(v => v.sId === id && v.type === type));
+            updatePlayerUI(st.queue[st.pIdx], false);
         }
 
-        function renderVerses(playlist, meta) {
-            let html = '';
-            if(state.currentType === 'surah' && state.currentId !== 1 && state.currentId !== 9) {
-                html += `<div class="text-center mb-2 mt-1"><img src="https://assets.quran.com/images/bismillah.svg" alt="Bismillah" class="h-9 mx-auto opacity-70" style="filter: invert(41%) sepia(86%) saturate(417%) hue-rotate(124deg) brightness(88%) contrast(85%);"></div>`;
+        function renderVerses(list) {
+            let h = '';
+            if(list.length > 0 && list[0].type === 'surah' && list[0].sId !== 1 && list[0].sId !== 9) {
+                h += `<div class="text-center mb-2 mt-1"><img src="https://assets.quran.com/images/bismillah.svg" class="h-7 mx-auto opacity-70" style="filter: invert(41%) sepia(86%) saturate(417%) hue-rotate(124deg) brightness(88%) contrast(85%);"></div>`;
             }
 
-            playlist.forEach(verse => {
-                html += `
-                <div id="verse-card-${verse.globalIndex}" onclick="playVerse(${verse.globalIndex})" class="verse-card bg-white rounded-xl shadow-sm border border-gray-100 p-3.5 cursor-pointer active:scale-[0.99] transition-all duration-300">
-                    <div class="flex justify-between items-start mb-2 gap-3">
-                        <div class="w-7 h-7 rounded-full border border-teal-100 flex items-center justify-center text-[11px] font-bold text-teal bg-teal-50 shrink-0 pt-0.5 shadow-sm">${toBnNum(verse.ayahNum)}</div>
-                        <div class="text-right flex-1 min-w-0">
-                            <p class="arabic-text text-[22px] font-bold text-gray-800 leading-normal">${verse.textAr}</p>
+            list.forEach((v) => {
+                const gIdx = st.queue.indexOf(v);
+                h += `
+                <div id="vc-${gIdx}" onclick="playQ(${gIdx})" class="v-card bg-white rounded-lg border border-gray-100 p-3 cursor-pointer transition-all duration-200">
+                    <div class="flex justify-between items-start gap-3">
+                        <div class="w-6 h-6 rounded-full border border-teal-100 flex items-center justify-center text-[10px] font-bold text-teal bg-teal-50/50 shrink-0 mt-1">${tbn(v.aNum)}</div>
+                        <div class="text-right flex-1">
+                            <p class="arabic-text text-[20px] font-bold text-gray-900">${v.tAr}</p>
                         </div>
                     </div>
-                    <div class="pt-2 flex justify-between items-end">
-                        <p class="text-gray-600 text-[13.5px] leading-relaxed flex-1 pr-2">${verse.textBn.replace(/<sup.*?<\/sup>/g, '')}</p>
-                        <!-- Equalizer / Icon -->
-                        <div class="shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-teal-50 text-teal">
-                            <i data-lucide="play" class="w-3 h-3 fill-current play-icon"></i>
-                            <div class="equalizer"><span></span><span></span><span></span></div>
+                    <div class="pt-2 flex justify-between items-end border-t border-gray-50 mt-2">
+                        <p class="text-gray-600 text-[13px] leading-snug flex-1 pr-2">${v.tBn.replace(/<sup.*?<\/sup>/g, '')}</p>
+                        <div class="play-btn w-6 h-6 rounded-full bg-teal-50 text-teal flex items-center justify-center">
+                            <svg class="w-3 h-3 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                         </div>
                     </div>
                 </div>`;
             });
-            document.getElementById('verses-container').innerHTML = html;
-            lucide.createIcons();
+            document.getElementById('verses-container').innerHTML = h;
+            if(st.pIdx >= 0 && st.queue[st.pIdx].sId === st.uId) updatePlayerUI(st.queue[st.pIdx], false);
         }
 
-        // --- ADVANCED AUDIO ENGINE (Deep Background Fix) ---
-        function setupAudioEngine() {
-            elements.audio1.addEventListener('ended', handleTrackEnd);
-            elements.audio2.addEventListener('ended', handleTrackEnd);
+        // --- Audio Logic ---
+        function setupAudio() {
+            dom.a1.addEventListener('ended', onEnd); dom.a2.addEventListener('ended', onEnd);
+            dom.a1.addEventListener('error', () => { if(st.isP) onEnd(); });
+            dom.a2.addEventListener('error', () => { if(st.isP) onEnd(); });
             
-            // Error handling for dead links to prevent stops
-            elements.audio1.addEventListener('error', () => { if(state.isPlaying) handleTrackEnd(); });
-            elements.audio2.addEventListener('error', () => { if(state.isPlaying) handleTrackEnd(); });
+            const updateState = (val) => {
+                st.isP = val;
+                if(val) {
+                    dom.iPlay.classList.add('hidden'); dom.iPause.classList.remove('hidden');
+                } else {
+                    dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
+                }
+            };
 
-            elements.audio1.addEventListener('play', () => setPlayingUI(true));
-            elements.audio2.addEventListener('play', () => setPlayingUI(true));
-            elements.audio1.addEventListener('pause', () => setPlayingUI(false));
-            elements.audio2.addEventListener('pause', () => setPlayingUI(false));
+            dom.a1.addEventListener('play', () => updateState(true));
+            dom.a2.addEventListener('play', () => updateState(true));
+            dom.a1.addEventListener('pause', () => updateState(false));
+            dom.a2.addEventListener('pause', () => updateState(false));
 
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.setActionHandler('play', togglePlayPause);
                 navigator.mediaSession.setActionHandler('pause', togglePlayPause);
-                navigator.mediaSession.setActionHandler('previoustrack', () => playVerse(state.currentAudioIndex - 1));
-                navigator.mediaSession.setActionHandler('nexttrack', () => handleTrackEnd()); // Next works like end
+                navigator.mediaSession.setActionHandler('previoustrack', () => playQ(st.pIdx - 1));
+                navigator.mediaSession.setActionHandler('nexttrack', () => onEnd());
             }
         }
 
-        function playVerse(index) {
-            if (index < 0 || index >= state.playlist.length) return;
-            state.currentAudioIndex = index;
-            const track = state.playlist[index];
-            if(!track.url) { handleTrackEnd(); return; } // Skip empty
-
-            state.activeAudioTag = 1;
-            elements.audio1.src = track.url;
-            elements.audio1.play().catch(e => console.log(e));
-            
-            updatePlayerUI(track);
-            preloadNextVerse();
+        function playQ(i) {
+            if (i < 0 || i >= st.queue.length) return;
+            st.pIdx = i; const t = st.queue[i];
+            st.aTag = 1; dom.a1.src = t.url;
+            dom.a1.play().catch(e => console.log(e));
+            updatePlayerUI(t, true);
+            preloadQ(); fetchNextChapBg();
         }
 
-        function handleTrackEnd() {
-            let nextIndex = state.currentAudioIndex + 1;
-            let currentList = state.playlist;
+        function onEnd() {
+            const nI = st.pIdx + 1;
+            if (nI >= st.queue.length) {
+                st.isP = false;
+                dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
+                return; 
+            }
+            st.pIdx = nI; const t = st.queue[nI];
+            st.aTag = st.aTag === 1 ? 2 : 1;
+            const aEl = st.aTag === 1 ? dom.a1 : dom.a2;
+            
+            if(!aEl.src.endsWith(t.url.split('/').pop())) aEl.src = t.url;
+            aEl.play().catch(e => console.log(e));
 
-            // Check if current chapter ended
-            if (nextIndex >= currentList.length) {
-                if (state.nextPlaylist && state.nextPlaylist.length > 0) {
-                    // GAPLESS CHAPTER SWAP
-                    state.playlist = state.nextPlaylist;
-                    state.currentId += 1;
-                    state.currentMeta = state.currentType === 'surah' ? state.surahs.find(s=>s.id===state.currentId) : state.paras.find(p=>p.id===state.currentId);
-                    
-                    nextIndex = 0;
-                    currentList = state.playlist;
-                    
-                    // Trigger UI render if screen is on, else flag it
-                    if (document.visibilityState === 'visible') {
-                        renderVerses(state.playlist, state.currentMeta);
-                        updateHeaderUIForNextChapter();
-                    } else {
-                        state.needsUIRender = true;
-                    }
-                    
-                    // Preload next next chapter
-                    preloadNextChapterData();
-                } else {
-                    setPlayingUI(false);
-                    return; // End of Quran or next not ready
+            if(t.sId !== st.uId && document.visibilityState === 'visible') renderReaderUI(t.sId, t.type);
+            updatePlayerUI(t, true);
+            preloadQ(); fetchNextChapBg();
+        }
+
+        function preloadQ() {
+            if (st.pIdx + 1 < st.queue.length) {
+                const idle = st.aTag === 1 ? dom.a2 : dom.a1;
+                idle.src = st.queue[st.pIdx + 1].url; idle.load();
+            }
+        }
+
+        async function fetchNextChapBg() {
+            if (st.isF || (st.queue.length - st.pIdx > 15)) return;
+            st.isF = true;
+            const lt = st.queue[st.queue.length - 1];
+            const nId = lt.sId + 1;
+            const lim = lt.type === 'surah' ? 114 : 30;
+            if (nId <= lim) {
+                try {
+                    const nV = await fetchChap(nId, lt.type);
+                    st.queue = st.queue.concat(nV);
+                } catch(e) {}
+            }
+            st.isF = false;
+        }
+
+        function updatePlayerUI(t, scrl) {
+            dom.p.classList.remove('translate-y-[150%]');
+            document.getElementById('player-title').textContent = t.sName;
+            document.getElementById('player-subtitle').textContent = `আয়াত ${tbn(t.aNum)}`;
+
+            if (document.visibilityState === 'visible') {
+                document.querySelectorAll('.v-card').forEach(el => {
+                    el.classList.remove('active-card');
+                    const b = el.querySelector('.play-btn');
+                    if(b) b.style.opacity = '1';
+                });
+                const c = document.getElementById(`vc-${st.pIdx}`);
+                if (c) {
+                    c.classList.add('active-card');
+                    const b = c.querySelector('.play-btn');
+                    if(b) b.style.opacity = '0.3';
+                    if(scrl) window.scrollTo({ top: c.offsetTop - 120, behavior: "smooth" });
                 }
             }
-
-            state.currentAudioIndex = nextIndex;
-            state.activeAudioTag = state.activeAudioTag === 1 ? 2 : 1;
-            const activeEl = state.activeAudioTag === 1 ? elements.audio1 : elements.audio2;
-            
-            // Failsafe: if preload failed, set src now synchronously
-            if (!activeEl.src.endsWith(currentList[nextIndex].url.split('/').pop())) {
-                activeEl.src = currentList[nextIndex].url;
-            }
-
-            // Must call play synchronously inside the ended event listener for iOS background compliance
-            activeEl.play().catch(e => {
-                console.log("Background play blocked, attempting skip", e);
-                setTimeout(handleTrackEnd, 500); // Try next if blocked
-            });
-            
-            try { updatePlayerUI(currentList[nextIndex]); } catch(e){} // Safe UI update
-            preloadNextVerse();
-        }
-
-        function preloadNextVerse() {
-            const next = state.currentAudioIndex + 1;
-            if (next < state.playlist.length && state.playlist[next].url) {
-                const inactiveEl = state.activeAudioTag === 1 ? elements.audio2 : elements.audio1;
-                inactiveEl.src = state.playlist[next].url; 
-                inactiveEl.load(); // Fetch implicitly
-            }
-        }
-
-        function updateHeaderUIForNextChapter() {
-            const meta = state.currentMeta;
-            document.getElementById('header-title').textContent = state.currentType === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name;
-            document.getElementById('reader-title').textContent = state.currentType === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name;
-            document.getElementById('reader-subtitle').textContent = state.currentType === 'surah' ? meta.translated_name.name : 'আল কুরআন';
-            document.getElementById('reader-revelation').textContent = state.currentType === 'surah' ? (meta.revelation_place === 'makkah' ? 'মাক্কী' : 'মাদানী') : '';
-            document.getElementById('reader-count').textContent = state.currentType === 'surah' ? `${toBnNum(meta.verses_count)} আয়াত` : '';
-        }
-
-        function updatePlayerUI(track) {
-            elements.bottomPlayer.classList.remove('translate-y-[150%]');
-            document.getElementById('player-title').textContent = track.surahName;
-            document.getElementById('player-subtitle').textContent = `আয়াত ${toBnNum(track.ayahNum)}`;
-
-            if (document.visibilityState === 'visible' && !state.needsUIRender) {
-                // Reset styling
-                document.querySelectorAll('.verse-card').forEach(el => {
-                    el.classList.remove('playing-card');
-                    el.querySelector('.play-icon').style.display = 'block';
-                });
-
-                // Apply active styling
-                const card = document.getElementById(`verse-card-${track.globalIndex}`);
-                if (card) {
-                    card.classList.add('playing-card');
-                    card.querySelector('.play-icon').style.display = 'none';
-                    
-                    // Smooth Auto-Center
-                    const headerOffset = 120;
-                    const elementPosition = card.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                }
-            }
-
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: `আয়াত ${toBnNum(track.ayahNum)}`,
-                    artist: track.surahName,
-                    album: 'আল কুরআন'
-                });
-            }
-        }
-
-        function setPlayingUI(isP) {
-            state.isPlaying = isP;
-            elements.iconPlayPause.setAttribute('data-lucide', isP ? 'pause' : 'play');
-            lucide.createIcons();
-            
-            // Pause animation if paused
-            if(document.visibilityState === 'visible') {
-                document.querySelectorAll('.equalizer span').forEach(s => {
-                    s.style.animationPlayState = isP ? 'running' : 'paused';
-                });
+            if('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({title: `আয়াত ${tbn(t.aNum)}`, artist: t.sName});
             }
         }
 
         function togglePlayPause() {
-            if (state.currentAudioIndex === -1 && state.playlist.length > 0) return playVerse(0);
-            const activeEl = state.activeAudioTag === 1 ? elements.audio1 : elements.audio2;
-            if (state.isPlaying) activeEl.pause();
-            else activeEl.play().catch(e=>console.log(e));
-        }
-
-        function pauseCurrentAudio() {
-            elements.audio1.pause(); elements.audio2.pause(); setPlayingUI(false);
+            if (st.pIdx === -1 && st.queue.length > 0) return playQ(0);
+            (st.aTag === 1 ? dom.a1 : dom.a2)[st.isP ? 'pause' : 'play']();
         }
 
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
-
