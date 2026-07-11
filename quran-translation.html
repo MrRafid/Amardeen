@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>আল কুরআন</title>
+    <meta name="referrer" content="no-referrer">
+    <title>আল কুরআন অনুবাদ</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Noto Sans Bengali (UI) & Amiri (Arabic) -->
@@ -51,7 +52,7 @@
         <button id="btn-back" class="hidden p-1.5 btn-press text-gray-600 bg-gray-50 rounded-full" onclick="navigateBack()">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <h1 id="header-title" class="text-[16px] font-bold text-gray-800">আল কুরআন</h1>
+        <h1 id="header-title" class="text-[16px] font-bold text-gray-800">আল কুরআন অনুবাদ</h1>
     </header>
 
     <!-- Main Lists Section -->
@@ -177,7 +178,6 @@
             requestWakeLock();
             clearTimeout(idleTimer);
             idleTimer = setTimeout(() => {
-                // Only allow screen to turn off if audio is paused
                 if (!state.isPlaying) releaseWakeLock();
             }, IDLE_TIMEOUT);
         }
@@ -189,12 +189,10 @@
             await loadSurahs();
             switchTab('surah');
 
-            // Activity Listeners for Wake Lock
             document.addEventListener('touchstart', resetActivityTimer, {passive: true});
             document.addEventListener('scroll', resetActivityTimer, {passive: true});
             document.addEventListener('click', resetActivityTimer, {passive: true});
 
-            // Restore UI logic when returning from background
             document.addEventListener("visibilitychange", () => {
                 if(document.visibilityState === 'visible') {
                     resetActivityTimer();
@@ -204,7 +202,7 @@
                             updateReaderHeader(track.sId, track.type);
                             renderVerses(state.queue.filter(v => v.sId === track.sId && v.type === track.type));
                         }
-                        updateUI(track, true); // Auto Scroll to center
+                        updateUI(track, true); 
                     }
                 }
             });
@@ -231,7 +229,7 @@
             document.getElementById('main-container').classList.remove('hidden');
             document.getElementById('reader-container').classList.add('hidden');
             document.getElementById('btn-back').classList.add('hidden');
-            document.getElementById('header-title').textContent = "আল কুরআন";
+            document.getElementById('header-title').textContent = "আল কুরআন অনুবাদ";
             if(state.tab === 'home') loadHist();
         }
 
@@ -254,7 +252,6 @@
             renderParas(state.paras);
         }
 
-        // Circular CSS Badge (Completely replaces broken images/svgs)
         const badgeHTML = (num) => `<div class="w-9 h-9 rounded-full border-[1.5px] border-teal-100 flex items-center justify-center font-bold text-teal bg-teal-50 shrink-0 shadow-sm"><span class="mt-0.5 text-[12px]">${num}</span></div>`;
 
         function renderSurahs(surahs) {
@@ -316,24 +313,27 @@
             localStorage.setItem('qh_final', JSON.stringify(hist));
         }
 
-        // --- Data Fetch Engine (Pagination Loop) ---
+        // --- Data Fetch Engine ---
         async function fetchChap(id, type) {
             const meta = type === 'surah' ? state.surahs.find(s=>s.id===id) : state.paras.find(p=>p.id===id);
             let vs = [], p = 1, tP = 1;
             const ep = type === 'surah' ? `verses/by_chapter/${id}` : `verses/by_juz/${id}`;
             while (p <= tP) {
-                const res = await fetch(`${API}/${ep}?language=bn&words=false&translations=161&fields=text_uthmani&audio=7&per_page=150&page=${p}`);
+                const res = await fetch(`${API}/${ep}?language=bn&words=false&translations=161&fields=text_uthmani&per_page=150&page=${p}`);
                 if(!res.ok) break;
                 const d = await res.json();
                 vs = vs.concat(d.verses);
                 tP = d.pagination.total_pages; p++;
             }
             return vs.map((v, idx) => ({
-                id: v.id, aNum: v.verse_number, tAr: v.text_uthmani, tBn: v.translations[0].text,
-                url: v.audio?.url ? (v.audio.url.startsWith('//') ? 'https:'+v.audio.url : (v.audio.url.startsWith('http') ? v.audio.url : 'https://verses.quran.com/'+v.audio.url)) : null,
+                id: v.id, aNum: v.verse_number, 
+                tAr: v.text_uthmani, 
+                tBn: v.translations[0].text,
+                // Clean HTML tags and superscript numbers for pure text-to-speech reading
+                tBnClean: v.translations[0].text.replace(/<sup.*?<\/sup>/g, '').replace(/<[^>]*>?/gm, '').trim(),
                 sName: type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name, 
                 sId: id, type: type
-            })).filter(v => v.url);
+            }));
         }
 
         function updateReaderHeader(id, type) {
@@ -341,7 +341,7 @@
             const meta = type === 'surah' ? state.surahs.find(s=>s.id===id) : state.paras.find(p=>p.id===id);
             document.getElementById('header-title').textContent = type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name;
             document.getElementById('reader-title').textContent = type === 'surah' ? (meta.name_complex || meta.name_arabic) : meta.name;
-            document.getElementById('reader-subtitle').textContent = type === 'surah' ? meta.translated_name.name : 'আল কুরআন';
+            document.getElementById('reader-subtitle').textContent = type === 'surah' ? meta.translated_name.name : 'আল কুরআন অনুবাদ';
             document.getElementById('reader-revelation').textContent = type === 'surah' ? (meta.revelation_place === 'makkah' ? 'মাক্কী' : 'মাদানী') : '';
             document.getElementById('reader-count').textContent = type === 'surah' ? `${tbn(meta.verses_count)} আয়াত` : '';
             document.getElementById('reader-revelation').style.display = type === 'para' ? 'none' : 'block';
@@ -362,20 +362,15 @@
             con.innerHTML = ''; ldr.classList.remove('hidden');
             
             try {
-                // Fetch the requested chapter & Replace current queue
                 state.queue = await fetchChap(id, type);
                 state.pIdx = -1;
                 ldr.classList.add('hidden');
                 
-                // Render the UI
                 renderVerses(state.queue.filter(v => v.sId === id && v.type === type));
                 
-                // 1. AUTO PLAY FIRST TRACK INSTANTLY
                 if (state.queue.length > 0) {
                     playTrack(0);
                 }
-                
-                // 2. BACKGROUND PRELOAD THE NEXT CHAPTER
                 preloadNextChapterSilently();
 
             } catch (e) {
@@ -384,7 +379,6 @@
             }
         }
 
-        // Silent preloading for Gapless Sync
         async function preloadNextChapterSilently() {
             if(state.isFetching || state.queue.length === 0) return;
             state.isFetching = true;
@@ -396,7 +390,6 @@
             if (nextId <= limit) {
                 try {
                     const nextChapData = await fetchChap(nextId, currentLastTrack.type);
-                    // Prevent accidental duplication
                     const newItems = nextChapData.filter(n => !state.queue.some(q => q.id === n.id));
                     state.queue = state.queue.concat(newItems);
                 } catch(e) {}
@@ -406,44 +399,42 @@
 
         function renderVerses(list) {
             let h = '';
-            // CSS Bismillah Text - Reliable and beautiful
             if(list.length > 0 && list[0].type === 'surah' && list[0].sId !== 1 && list[0].sId !== 9) {
-                h += `<div class="text-center mb-3 mt-3"><span class="arabic-text text-[24px] font-bold text-teal opacity-90">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</span></div>`;
+                h += `<div class="text-center mb-3 mt-3">
+                        <span class="text-[16px] font-bold text-teal opacity-90">বিসমিল্লাহির রাহমানির রাহীম</span><br>
+                        <span class="arabic-text text-[13px] text-teal opacity-60 mt-0.5 block">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</span>
+                      </div>`;
             }
             list.forEach((v) => {
                 const gIdx = state.queue.indexOf(v);
                 h += `
                 <div id="vc-${gIdx}" onclick="playTrack(${gIdx})" class="v-card bg-white rounded-xl border border-gray-100 p-3.5 cursor-pointer relative overflow-hidden mb-1">
-                    <div class="flex justify-between items-start gap-3 relative z-10">
+                    <div class="flex items-start gap-3 relative z-10">
                         <div class="w-7 h-7 rounded-full border border-teal-100 flex items-center justify-center text-[10px] font-bold text-teal bg-teal-50 shrink-0 mt-1">${tbn(v.aNum)}</div>
-                        <div class="text-right flex-1">
-                            <p class="arabic-text text-[20px] font-bold text-gray-900">${v.tAr}</p>
+                        <div class="text-left flex-1">
+                            <!-- বাংলা অনুবাদ বড় করে উপরে দেওয়া হয়েছে -->
+                            <p class="text-[16px] font-semibold text-gray-800 leading-relaxed mb-2">${v.tBnClean || v.tBn.replace(/<sup.*?<\/sup>/g, '')}</p>
+                            <!-- আরবি টেক্সট ছোট করে নিচে দেওয়া হয়েছে -->
+                            <div class="pt-2 border-t border-gray-50 text-right">
+                                <p class="arabic-text text-[15px] text-gray-500 leading-relaxed">${v.tAr}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="pt-2 mt-2 border-t border-gray-50 relative z-10">
-                        <p class="text-gray-600 text-[13px] leading-relaxed">${v.tBn.replace(/<sup.*?<\/sup>/g, '')}</p>
                     </div>
                 </div>`;
             });
             document.getElementById('verses-container').innerHTML = h;
         }
 
-        // --- GAPLESS AUDIO ENGINE ---
+        // --- GAPLESS AUDIO ENGINE (TTS FOR BENGALI) ---
         function setupAudioEngine() {
             audioEl.addEventListener('ended', () => playNext(false));
-            audioEl.addEventListener('error', () => { 
-                if(state.isPlaying) {
-                    dom.status.classList.remove('hidden'); dom.status.textContent = 'নেটওয়ার্ক এরর...';
-                    setTimeout(() => playNext(false), 2000); 
-                }
-            });
-
+            
             audioEl.addEventListener('waiting', () => { dom.status.classList.remove('hidden'); });
             audioEl.addEventListener('playing', () => { dom.status.classList.add('hidden'); });
 
             audioEl.addEventListener('play', () => {
                 state.isPlaying = true;
-                resetActivityTimer(); // Keep screen alive
+                resetActivityTimer(); 
                 dom.iPlay.classList.add('hidden'); dom.iPause.classList.remove('hidden');
             });
             audioEl.addEventListener('pause', () => {
@@ -464,24 +455,57 @@
             state.pIdx = idx; 
             const t = state.queue[idx];
             
-            // Check if we shifted to a new chapter automatically (e.g. Fatiha to Baqarah)
             if (t.sId !== state.uId && document.visibilityState === 'visible') {
                 updateReaderHeader(t.sId, t.type);
                 renderVerses(state.queue.filter(v => v.sId === t.sId && v.type === t.type));
             }
 
-            audioEl.src = t.url;
-            audioEl.play().catch(e => console.log(e));
+            if(window.speechSynthesis) window.speechSynthesis.cancel(); // আগের কোনো স্পিচ থাকলে বন্ধ করা
+
+            // গুগল ক্লাউড TTS ব্যবহার করে বাংলা অডিও তৈরি
+            const textToRead = t.tBnClean;
+            const ttsUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=bn&q=${encodeURIComponent(textToRead)}`;
             
-            updateUI(t, true); // Update Highlight and Center Screen
+            audioEl.src = ttsUrl;
+            audioEl.play().catch(e => {
+                // গুগল যদি দীর্ঘ আয়াত বা CORS এর জন্য ব্লক করে দেয়, তবে ব্রাউজারের নিজস্ব স্পিচ সিনথেসিস ব্যবহার হবে
+                if ('speechSynthesis' in window) {
+                    state.isPlaying = true;
+                    dom.iPlay.classList.add('hidden'); dom.iPause.classList.remove('hidden');
+                    
+                    const utterance = new SpeechSynthesisUtterance(textToRead);
+                    utterance.lang = 'bn-BD';
+                    utterance.rate = 0.9; // পড়ার গতি কিছুটা রিলাক্সড
+                    utterance.onend = () => playNext(false);
+                    utterance.onerror = () => playNext(false);
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    setTimeout(() => playNext(false), 1500);
+                }
+            });
             
-            // Fetch next chapter proactively if we are close to the end (20 verses left)
+            updateUI(t, true); 
+            
             if (state.queue.length - idx < 20) preloadNextChapterSilently();
         }
 
         function togglePlayPause() {
             if (state.pIdx === -1 && state.queue.length > 0) return playTrack(0);
-            if (state.isPlaying) audioEl.pause(); else audioEl.play().catch(e=>console.log(e));
+            
+            if (state.isPlaying) {
+                state.isPlaying = false;
+                audioEl.pause();
+                if(window.speechSynthesis) window.speechSynthesis.pause();
+                dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
+            } else {
+                state.isPlaying = true;
+                if(window.speechSynthesis && window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                } else {
+                    audioEl.play().catch(e => console.log(e));
+                }
+                dom.iPlay.classList.add('hidden'); dom.iPause.classList.remove('hidden');
+            }
             resetActivityTimer();
         }
 
@@ -489,10 +513,9 @@
             if (state.pIdx + 1 < state.queue.length) {
                 playTrack(state.pIdx + 1);
             } else if (!userTriggered) {
-                // Stop completely if queue is empty
                 state.isPlaying = false;
                 dom.iPlay.classList.remove('hidden'); dom.iPause.classList.add('hidden');
-                releaseWakeLock(); // Allow screen to sleep
+                releaseWakeLock(); 
             }
         }
 
@@ -506,15 +529,12 @@
             document.getElementById('player-subtitle').textContent = `আয়াত ${tbn(t.aNum)}`;
             dom.status.classList.add('hidden');
 
-            // Reset all styles
             document.querySelectorAll('.v-card').forEach(el => el.classList.remove('active-card'));
             
-            // Apply Highlight Style
             const c = document.getElementById(`vc-${state.pIdx}`);
             if (c) {
                 c.classList.add('active-card');
                 
-                // AUTO CENTER SCROLL
                 if(doScroll && document.visibilityState === 'visible') {
                     c.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
