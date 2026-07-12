@@ -7,7 +7,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Amar Deen - আমার দ্বীন</title>
+    <title id="appTitle">Amar Deen - আমার দ্বীন</title>
     
     <!-- Real PWA Manifest Link -->
     <link rel="manifest" href="manifest.json">
@@ -65,6 +65,7 @@
             width: 38px; height: 38px; background: #ffffff; border-radius: 10px; 
             display: flex; justify-content: center; align-items: center; 
             transition: all 0.15s ease; border: 1px solid #e2e8f0; color: #475569; font-size: 15px;
+            overflow: hidden;
         }
         @media (hover: hover) { .cat-item:hover .icon-box { background: #f1f5f9; transform: translateY(-1px); border-color: #cbd5e1;} }
         .cat-item:active .icon-box { transform: scale(0.94); background: #e2e8f0; color: #0f172a; }
@@ -84,7 +85,7 @@
                     <img src="logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; document.getElementById('fallbackIcon').style.display='block';">
                     <i id="fallbackIcon" class="fa-solid fa-kaaba text-[11px]" style="display: none;"></i>
                 </div>
-                <h1 class="text-[15px] font-bold tracking-tight text-slate-800">Amar Deen</h1>
+                <h1 id="appNameHeader" class="text-[15px] font-bold tracking-tight text-slate-800">Amar Deen</h1>
             </div>
             
             <div class="flex items-center gap-2">
@@ -137,51 +138,35 @@
                 </div>
             </section>
 
-            <!-- CATEGORY GRID -->
+            <!-- CATEGORY GRID (DYNAMIC) -->
             <section class="bg-white border border-slate-100 rounded-xl p-3 shadow-sm z-10 relative">
-                <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-y-3 gap-x-2">
-                    <a href="quran.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-book-quran"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">আল কুরআন</span></a>
-                    <a href="quran-translation.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-book-open-reader"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">কুরআন অনুবাদ</span></a>
-                    <a href="hadith.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-book-open"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">হাদিস</span></a>
-                    <a href="#" onclick="openPrayerModal(); return false;" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-clock"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">সময়সূচী</span></a>
-                    
-                    <a href="tasbeeh.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-hand-holding-heart"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">তাসবীহ</span></a>
-                    <a href="makkah-madinah.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-kaaba"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">মক্কা মদিনা</span></a>
-                    <a href="namaz-shikha.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-person-praying"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">নামাজ শিক্ষা</span></a>
-                    <a href="dua.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-hands-praying"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">দোয়া</span></a>
+                <div id="mainCategoriesGrid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-y-3 gap-x-2">
+                    <!-- Main Categories will load here -->
                 </div>
 
                 <div id="extraCategories">
-                    <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-y-3 gap-x-2 pt-3">
-                        <a href="prophets.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-mosque"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">নবীজীদের জীবন</span></a>
-                        <a href="islamic-stories.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-scroll"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">ইসলামিক গল্প</span></a>
-                        <a href="islamic-video.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-regular fa-circle-play"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">ইসলামিক ভিডিও</span></a>
-                        <a href="islamic-bayan.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-microphone-lines"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">ইসলামিক বয়ান</span></a>
-                        <a href="islamic-books.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-book"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">ইসলামিক বই</span></a>
-                        <a href="fatwa.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-regular fa-circle-question"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">দ্বীন জিজ্ঞাসা</span></a>
-                        <a href="islamic-duties.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-solid fa-clipboard-list"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">দায়িত্ব</span></a>
-                        <a href="calendar.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-regular fa-calendar-days"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">ক্যালেন্ডার</span></a>
-                        <a href="islamic-names.html" class="cat-item flex flex-col items-center gap-1"><div class="icon-box"><i class="fa-regular fa-id-badge"></i></div><span class="text-[10px] font-medium text-slate-600 text-center leading-tight">ইসলামিক নাম</span></a>
+                    <div id="extraCategoriesGrid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-y-3 gap-x-2 pt-3">
+                        <!-- Extra Categories will load here -->
                     </div>
                 </div>
 
-                <div class="mt-2.5 flex justify-center">
+                <div class="mt-2.5 flex justify-center" id="toggleButtonContainer">
                     <button onclick="toggleCategories()" class="text-[10px] text-slate-400 font-semibold flex items-center gap-1.5 active:scale-95 transition bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100 hover:bg-slate-100">
                         <span id="toggleText">আরও দেখুন</span> <i id="toggleIcon" class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200"></i>
                     </button>
                 </div>
             </section>
 
-            <!-- MODERN ASMAUL HUSNA PLAYER -->
-            <section class="bg-white border border-slate-100 rounded-[14px] shadow-sm z-10 relative overflow-hidden flex flex-col">
+            <!-- MODERN AUDIO PLAYER (DYNAMIC) -->
+            <section id="audioPlayerSection" style="display: none;" class="bg-white border border-slate-100 rounded-[14px] shadow-sm z-10 relative overflow-hidden flex flex-col">
                 <div class="flex items-center w-full">
-                    <a href="asmaul-husna.html" class="flex items-center gap-2.5 py-2.5 px-3 cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition-colors w-1/2 md:w-auto md:flex-1">
-                        <div class="w-9 h-9 bg-slate-50 border border-slate-100 rounded-full flex justify-center items-center text-appGreen shrink-0">
-                            <i class="fa-solid fa-book-open-reader text-[13px]"></i>
+                    <a id="audioLink" href="asmaul-husna.html" class="flex items-center gap-2.5 py-2.5 px-3 cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition-colors w-1/2 md:w-auto md:flex-1">
+                        <div id="audioIconContainer" class="w-9 h-9 bg-slate-50 border border-slate-100 rounded-full flex justify-center items-center text-appGreen shrink-0 overflow-hidden">
+                            <!-- Image will load here -->
                         </div>
                         <div class="flex flex-col truncate">
-                            <span class="text-[12px] font-bold text-slate-800 leading-tight truncate">আসমাউল হুসনা</span>
-                            <span class="text-[9.5px] font-medium text-slate-500 mt-0.5 truncate">আল্লাহর ৯৯টি নাম</span>
+                            <span id="audioTitle" class="text-[12px] font-bold text-slate-800 leading-tight truncate">আসমাউল হুসনা</span>
+                            <span id="audioSubtitle" class="text-[9.5px] font-medium text-slate-500 mt-0.5 truncate">আল্লাহর ৯৯টি নাম</span>
                         </div>
                     </a>
                     
@@ -328,7 +313,7 @@
 
         async function toggleNoti() {
             if (!notiActive) {
-                if (!("Notification" in window)) return alert("আপনার ব্রাউজার নোটিফিকেশন সাপোর্ট করে না।");
+                if (!("Notification" in window)) return alert("আপনার ব্রাউজার নোটিফিকেশন সাপোর্ট করে কাশী।");
                 const perm = await Notification.requestPermission();
                 if (perm === "granted") notiActive = true;
                 else return alert("অ্যালার্ম পেতে ব্রাউজারের সেটিংস থেকে পারমিশন দিন।");
@@ -463,7 +448,79 @@
             audioEl.currentTime = 0;
         });
 
-        // 8. PURE DYNAMIC FEED SYSTEM
+        // --- DYNAMIC APP CONFIGURATION (NOW WITH IMAGE URLs) ---
+        async function loadAppConfig() {
+            try {
+                const response = await fetch('app-config.json');
+                if (!response.ok) return;
+                const config = await response.json();
+
+                // 1. Setup App Name
+                if (config.appName) {
+                    document.getElementById('appNameHeader').innerText = config.appName;
+                    document.getElementById('appTitle').innerText = config.appName + " - আমার দ্বীন";
+                }
+
+                // 2. Setup Audio Player
+                if (config.audioPlayer && config.audioPlayer.active) {
+                    document.getElementById('audioPlayerSection').style.display = 'flex';
+                    document.getElementById('audioTitle').innerText = config.audioPlayer.title;
+                    document.getElementById('audioSubtitle').innerText = config.audioPlayer.subtitle;
+                    
+                    // Audio Player Icon Setup (URL based)
+                    const audioIconDiv = document.getElementById('audioIconContainer');
+                    if(config.audioPlayer.iconUrl) {
+                        audioIconDiv.innerHTML = `<img src="${config.audioPlayer.iconUrl}" class="w-5 h-5 object-contain" onerror="this.style.display='none'">`;
+                    } else {
+                        audioIconDiv.innerHTML = `<i class="fa-solid fa-music text-[13px]"></i>`;
+                    }
+
+                    document.getElementById('asmaulAudioPlayer').src = config.audioPlayer.audioSrc;
+                    document.getElementById('audioLink').href = config.audioPlayer.link;
+                } else {
+                    document.getElementById('audioPlayerSection').style.display = 'none';
+                }
+
+                // 3. Setup Categories (URL based Icons)
+                const activeCategories = config.categories.filter(c => c.active);
+                let mainHtml = '';
+                let extraHtml = '';
+
+                activeCategories.forEach((cat, index) => {
+                    // Category Icon Setup (URL based)
+                    let iconHtml = cat.iconUrl 
+                        ? `<img src="${cat.iconUrl}" alt="${cat.name}" class="w-[22px] h-[22px] object-contain" onerror="this.style.display='none'">` 
+                        : `<i class="fa-solid fa-link text-slate-400"></i>`; // Fallback icon if URL is empty
+
+                    let catHtml = `
+                    <a href="${cat.link}" ${cat.onClick ? `onclick="${cat.onClick}"` : ''} class="cat-item flex flex-col items-center gap-1">
+                        <div class="icon-box">${iconHtml}</div>
+                        <span class="text-[10px] font-medium text-slate-600 text-center leading-tight">${cat.name}</span>
+                    </a>`;
+                    
+                    if (index < 8) {
+                        mainHtml += catHtml; 
+                    } else {
+                        extraHtml += catHtml; 
+                    }
+                });
+
+                document.getElementById('mainCategoriesGrid').innerHTML = mainHtml;
+                document.getElementById('extraCategoriesGrid').innerHTML = extraHtml;
+                
+                if(extraHtml === '') {
+                    document.getElementById('toggleButtonContainer').style.display = 'none';
+                } else {
+                    document.getElementById('toggleButtonContainer').style.display = 'flex';
+                }
+
+            } catch (error) {
+                console.log("Error loading app config", error);
+            }
+        }
+
+
+        // PURE DYNAMIC FEED SYSTEM
         async function loadDynamicFeed() {
             const feedContainer = document.getElementById('dynamicFeed');
             const footerContainer = document.getElementById('minimalFooter');
@@ -478,7 +535,8 @@
                 let footerHtml = '';
 
                 data.forEach(item => {
-                    if (!item.active) return;
+                    // Ignore instruction blocks or inactive items
+                    if (item.type === 'INSTRUCTION' || !item.active) return;
                     
                     if (item.type === 'footer-links') {
                         footerHtml = `
@@ -489,7 +547,7 @@
                         return; 
                     }
 
-                    let colSpanClass = (item.type === 'notice' || item.type === 'video' || item.type === 'playlist' || item.type === 'video-grid' || item.type === 'ramadan') ? 'md:col-span-2' : '';
+                    let colSpanClass = (item.type === 'notice' || item.type === 'video' || item.type === 'playlist' || item.type === 'video-grid' || item.type === 'image-grid' || item.type === 'ramadan') ? 'md:col-span-2' : '';
                     feedHtml += `<div class="${colSpanClass} h-full">`;
 
                     if (item.type === 'notice') {
@@ -566,6 +624,22 @@
                             ${gridHtml}
                         </div>`;
                     }
+                    // IMAGE-GRID (ছোট ছবির জন্য)
+                    else if (item.type === 'image-grid') {
+                        let gridHtml = '';
+                        item.images.forEach(img => {
+                            gridHtml += `
+                            <a href="${img.link || '#'}" target="_blank" class="block bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden flex-1 relative flex flex-col h-[130px]">
+                                <img src="${img.imageUrl}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                ${img.title ? `<div class="absolute bottom-0 left-0 w-full bg-black/60 text-white text-[9.5px] font-semibold px-2 py-1.5 truncate backdrop-blur-sm">${img.title}</div>` : ''}
+                            </a>`;
+                        });
+                        
+                        feedHtml += `
+                        <div class="grid grid-cols-2 gap-2 w-full h-full">
+                            ${gridHtml}
+                        </div>`;
+                    }
                     else if (item.type === 'ramadan') {
                         feedHtml += `
                         <div class="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100 rounded-xl p-3 shadow-sm h-full flex flex-col justify-center">
@@ -586,8 +660,8 @@
                     }
                     else if (item.type === 'image') {
                         feedHtml += `
-                        <a href="${item.link || '#'}" target="_blank" class="block bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden relative h-full">
-                            <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover min-h-[110px]" onerror="this.style.display='none'">
+                        <a href="${item.link || '#'}" target="_blank" class="block bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden relative h-full min-h-[120px]">
+                            <img src="${item.imageUrl}" alt="${item.title || 'Image'}" class="w-full h-full object-cover absolute inset-0" onerror="this.style.display='none'">
                         </a>`;
                     }
                     else if (item.type === 'quote') {
@@ -615,9 +689,11 @@
             initLocation(); 
             updateNotiUI(); 
             fetchPrayerTimes(); 
+            loadAppConfig(); 
             loadDynamicFeed(); 
         });
     </script>
 </body>
 </html>
+
 
