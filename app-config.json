@@ -9,7 +9,7 @@
     "active": true,
     "title": "আসমাউল হুসনা",
     "subtitle": "আল্লাহর ৯৯টি নাম",
-    "iconUrl": "https://cdn-icons-png.flaticon.com/512/2855/2855172.png",
+    "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/99namesofAllah.png",
     "audioSrc": "audio/99names.mp3",
     "link": "asmaul-husna.html"
   },
@@ -36,7 +36,7 @@
     {
       "active": true,
       "name": "সময়সূচী",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/3106/3106720.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/prayerTime.png",
       "link": "#",
       "onClick": "openPrayerModal(); return false;"
     },
@@ -71,10 +71,10 @@
       "link": "prophets.html"
     },
     {
-      "active": false,
-      "name": "ডামি ক্যাটাগরি (কপি করার জন্য)",
-      "iconUrl": "এখানে_আপনার_ছবির_লিংক_দিন.png",
-      "link": "#"
+      "active": true,
+      "name": "আসমাউল হুসনা",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/99namesofAllah.png",
+      "link": "asmaul-husna.html"
     }
   ]
 }
