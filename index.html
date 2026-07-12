@@ -628,15 +628,16 @@
                     else if (item.type === 'image-grid') {
                         let gridHtml = '';
                         item.images.forEach(img => {
+                            // ফিক্স: aspect-video ব্যবহার করা হয়েছে যেন সব ছবি সুন্দর সাইজে আসে
                             gridHtml += `
-                            <a href="${img.link || '#'}" target="_blank" class="block bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden flex-1 relative flex flex-col h-[130px]">
+                            <a href="${img.link || '#'}" target="_blank" class="block bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden relative aspect-video">
                                 <img src="${img.imageUrl}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                                 ${img.title ? `<div class="absolute bottom-0 left-0 w-full bg-black/60 text-white text-[9.5px] font-semibold px-2 py-1.5 truncate backdrop-blur-sm">${img.title}</div>` : ''}
                             </a>`;
                         });
                         
                         feedHtml += `
-                        <div class="grid grid-cols-2 gap-2 w-full h-full">
+                        <div class="grid grid-cols-2 gap-2 w-full">
                             ${gridHtml}
                         </div>`;
                     }
@@ -658,10 +659,13 @@
                             </div>
                         </div>`;
                     }
+                    // IMAGE (বড় ছবির জন্য)
                     else if (item.type === 'image') {
+                        // ফিক্স: aspect-video এবং টাইটেল দেখানোর কোড যুক্ত করা হয়েছে
                         feedHtml += `
-                        <a href="${item.link || '#'}" target="_blank" class="block bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden relative h-full min-h-[120px]">
-                            <img src="${item.imageUrl}" alt="${item.title || 'Image'}" class="w-full h-full object-cover absolute inset-0" onerror="this.style.display='none'">
+                        <a href="${item.link || '#'}" target="_blank" class="block bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden relative aspect-video">
+                            <img src="${item.imageUrl}" alt="${item.title || 'Image'}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                            ${item.title ? `<div class="absolute bottom-0 left-0 w-full bg-black/60 text-white text-[11.5px] font-semibold px-3 py-2 truncate backdrop-blur-sm">${item.title}</div>` : ''}
                         </a>`;
                     }
                     else if (item.type === 'quote') {
@@ -695,5 +699,4 @@
     </script>
 </body>
 </html>
-
 
