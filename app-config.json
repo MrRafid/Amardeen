@@ -1,0 +1,83 @@
+{
+  "_READ_ME_1": "নতুন ক্যাটাগরি তৈরি করতে নিচের যেকোনো একটি ব্লক কপি করে পেস্ট করুন।",
+  "_READ_ME_2": "iconUrl এর ভেতরে যেকোনো ছবির লিংক (URL) দিলেই সেটা আইকন হিসেবে বসে যাবে।",
+  "_READ_ME_3": "কোনো ক্যাটাগরি বন্ধ করতে চাইলে active: false করে দিন।",
+  
+  "appName": "Amar Deen",
+  
+  "audioPlayer": {
+    "active": true,
+    "title": "আসমাউল হুসনা",
+    "subtitle": "আল্লাহর ৯৯টি নাম",
+    "iconUrl": "https://cdn-icons-png.flaticon.com/512/2855/2855172.png",
+    "audioSrc": "audio/99names.mp3",
+    "link": "asmaul-husna.html"
+  },
+  
+  "categories": [
+    {
+      "active": true,
+      "name": "আল কুরআন",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/3382/3382436.png",
+      "link": "quran.html"
+    },
+    {
+      "active": true,
+      "name": "কুরআন অনুবাদ",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/2083/2083162.png",
+      "link": "quran-translation.html"
+    },
+    {
+      "active": true,
+      "name": "হাদিস",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/2723/2723826.png",
+      "link": "hadith.html"
+    },
+    {
+      "active": true,
+      "name": "সময়সূচী",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/3106/3106720.png",
+      "link": "#",
+      "onClick": "openPrayerModal(); return false;"
+    },
+    {
+      "active": true,
+      "name": "তাসবীহ",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/8207/8207908.png",
+      "link": "tasbeeh.html"
+    },
+    {
+      "active": true,
+      "name": "মক্কা মদিনা",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/7594/7594612.png",
+      "link": "makkah-madinah.html"
+    },
+    {
+      "active": true,
+      "name": "নামাজ শিক্ষা",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/7762/7762141.png",
+      "link": "namaz-shikha.html"
+    },
+    {
+      "active": true,
+      "name": "দোয়া",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/8157/8157849.png",
+      "link": "dua.html"
+    },
+    {
+      "active": true,
+      "name": "নবীজীদের জীবন",
+      "iconUrl": "https://cdn-icons-png.flaticon.com/512/2375/2375371.png",
+      "link": "prophets.html"
+    },
+    {
+      "active": false,
+      "name": "ডামি ক্যাটাগরি (কপি করার জন্য)",
+      "iconUrl": "এখানে_আপনার_ছবির_লিংক_দিন.png",
+      "link": "#"
+    }
+  ]
+}
+
+
+
