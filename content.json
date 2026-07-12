@@ -11,6 +11,17 @@
     "description": "আসসালামু আলাইকুম। আমাদের অ্যাপে নতুন আপডেট এসেছে। নিয়মিত ব্যবহার করুন এবং সওয়াবের অংশীদার হোন।",
     "icon": "fa-bullhorn"
   },
+
+
+  {
+    "type": "image",
+    "active": true,
+    "title": "এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ(সাঃ) Playlist",
+    "imageUrl": "https://i.ytimg.com/vi/DAORc0Moauk/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCgFM826IyNgjGN0JpjSN8uAICb8A",
+    "link": "https://youtube.com/playlist?list=PLEdLmfVFySHk&si=DFI2hcOde7o99t-6"
+  },
+
+  
   {
     "type": "image-grid",
     "active": true,
