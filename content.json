@@ -1,103 +1,72 @@
 [
-     {
+  {
+    "type": "INSTRUCTION",
+    "message": "এখানে যেকোনো আইটেম বন্ধ করতে active: false দিন। নতুন ডামি আইটেম যোগ করতে নিচ থেকে false করা ব্লক কপি করে true করে দিন।",
+    "active": false
+  },
+  {
     "type": "notice",
     "active": true,
     "title": "নোটিশ",
     "description": "আসসালামু আলাইকুম। আমাদের অ্যাপে নতুন আপডেট এসেছে। নিয়মিত ব্যবহার করুন এবং সওয়াবের অংশীদার হোন।",
     "icon": "fa-bullhorn"
   },
-    {
-    "type": "playlist",
-    "active": true,
-    "title": "এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ (সাঃ) (প্লেলিস্ট)",
-    "youtubeId": "PLEdLmfVFySHk"
-  },
- 
-       {
-    "type": "video-grid",
-    "active": false,
-    "videos": [
-      {
-        "title": "কবরের ভেতর একে একে কী অপেক্ষা করছে | এআই ভিজ্যুয়ালাইজড কিয়ামত দিবস সিরিজ - পর্ব ১",
-        "youtubeId": "TWTurnPdxZs"
-      },
-      {
-        "title": "শেষ দিবস | এআই–ভিজুয়ালাইজড কিয়ামত সিরিজ – পর্ব ২",
-        "youtubeId": "k8C7jBzEI_c"
-      }
-    ]
-  },
-     
-
   {
-    "type": "video-grid",
-    "active": false,
-    "videos": [
+    "type": "image-grid",
+    "active": true,
+    "images": [
       {
-        "title": "পুনরুত্থানের দিন - পুলসিরাত | এআই–ভিজ্যুয়ালাইজড কিয়ামত দিবস সিরিজ – পর্ব ৩",
-        "youtubeId": "ZMLsUpxQPXc"
+        "title": "গল্প ১ - ছবি",
+        "imageUrl": "https://i.ytimg.com/vi/ZMLsUpxQPXc/hqdefault.jpg",
+        "link": "https://youtube.com/"
       },
       {
-        "title": "জন্নাত ও জাহান্নামে প্রথম ২৪ ঘণ্টা | এআই-ভিজ্যুয়ালাইজড কিয়ামতের দিবস সিরিজ - পর্ব ৪",
-        "youtubeId": "4FXHRg1BYjw"
+        "title": "গল্প ২ - ছবি",
+        "imageUrl": "https://i.ytimg.com/vi/4FXHRg1BYjw/hqdefault.jpg",
+        "link": "https://youtube.com/"
       }
     ]
   },
-     
-{
+  {
     "type": "video",
     "active": false,
-    "title": "বড় ভিডিও (ফুল স্ক্রিন)",
+    "title": "বড় ভিডিও ডামি (কপি করার জন্য)",
     "youtubeId": "J-o1dFveFwU"
   },
   {
-    "type": "video-grid",
+    "type": "image",
     "active": false,
-    "videos": [
-      {
-        "title": "গল্প ১",
-        "youtubeId": "J-o1dFveFwU"
-      },
-      {
-        "title": "গল্প ২",
-        "youtubeId": "J-o1dFveFwU"
-      }
-    ]
+    "title": "বড় ব্যানার ছবি ডামি (কপি করার জন্য)",
+    "imageUrl": "https://i.ytimg.com/vi_webp/DAORc0Moauk/hqdefault.webp",
+    "link": "https://youtube.com/playlist?list=PLEdLmfVFySHk&si=vePoghQeGxTZGXpx"
   },
- 
   {
     "type": "hadith",
-    "active": false,
+    "active": true,
     "title": "আজকের হাদিস",
     "text": "যে ব্যক্তি আল্লাহ ও শেষ দিনের প্রতি ঈমান রাখে, সে যেন ভালো কথা বলে অথবা চুপ থাকে।",
     "reference": "সহীহ বুখারী: ৬০১৮"
   },
   {
     "type": "dua",
-    "active": false,
+    "active": true,
     "title": "সকাল-সন্ধ্যার দোয়া",
     "arabic": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
     "meaning": "আল্লাহর নামে, যাঁর নামের বরকতে আসমান ও যমীনের কোনো কিছুই ক্ষতি করতে পারে না, আর তিনি সর্বশ্রোতা, সর্বজ্ঞানী।"
   },
   {
-    "type": "ramadan",
+    "type": "hadith",
     "active": false,
-    "date": "১ম রমজান",
-    "sehri": "০৪:৩০ AM",
-    "iftar": "০৬:১৫ PM"
+    "title": "ডামি হাদিস ব্লক (কপি করার জন্য)",
+    "text": "এখানে নতুন কোনো হাদিস বসাতে পারবেন।",
+    "reference": "রেফারেন্স এখানে"
   },
   {
-    "type": "image",
+    "type": "dua",
     "active": false,
-    "title": "এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ (সাঃ) (প্লেলিস্ট)",
-    "imageUrl": "https://i.ytimg.com/vi_webp/DAORc0Moauk/hqdefault.webp",
-    "link": "https://youtube.com/playlist?list=PLEdLmfVFySHk&si=vePoghQeGxTZGXpx"
-  },
-  {
-    "type": "quote",
-    "active": false,
-    "text": "দুনিয়া হচ্ছে মুমিনের জন্য কারাগার আর কাফেরের জন্য জান্নাত।",
-    "author": "আল-হাদিস"
+    "title": "ডামি দোয়া ব্লক (কপি করার জন্য)",
+    "arabic": "দোয়ার আরবি",
+    "meaning": "এখানে নতুন দোয়ার অর্থ।"
   },
   {
     "type": "footer-links",
@@ -108,3 +77,5 @@
     "sourceUrl": "https://github.com/MrRafid"
   }
 ]
+
+
