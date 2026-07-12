@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>আসমাউল হুসনা</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ডেটা এবং লিংকের ফাইলটি কানেক্ট করা হলো -->
+    <script src="99names_data.js"></script>
+
+    <style>
+        :root {
+            --primary: #000000;
+            --bg: #f9f9f9;
+            --border: #e0e0e0;
+            --text: #222222;
+            --sub-text: #666666;
+            --highlight: #e8f5e9;
+            --highlight-border: #4caf50;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 90px;
+        }
+
+        /* ক্লিন অ্যাপ বার */
+        .app-bar {
+            position: sticky;
+            top: 0;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            margin-right: 16px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .back-btn svg { width: 20px; height: 20px; fill: var(--text); }
+        .app-bar h1 { font-size: 18px; font-weight: 600; color: var(--text); }
+
+        /* লাইটওয়েট গ্রিড */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+            gap: 12px;
+            padding: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .card:active { transform: scale(0.96); }
+
+        .card.active {
+            background: var(--highlight);
+            border-color: var(--highlight-border);
+        }
+
+        .num { font-size: 11px; color: var(--sub-text); margin-bottom: 4px; font-family: sans-serif; }
+        .ar { font-family: 'Amiri', serif; font-size: 26px; color: var(--primary); margin-bottom: 4px; }
+        .bn { font-size: 13px; font-weight: 700; color: var(--text); }
+        .mean { font-size: 11px; color: var(--sub-text); margin-top: 2px; }
+
+        .card.active .num, .card.active .ar, .card.active .bn, .card.active .mean { color: #1b5e20; }
+
+        /* মিনিমাল প্লেয়ার */
+        .player-wrap {
+            position: fixed;
+            bottom: 16px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 1000;
+            padding: 0 16px;
+        }
+
+        .player {
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 8px 12px 8px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 320px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            pointer-events: auto;
+            border: 1px solid var(--border);
+        }
+
+        .p-info { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+        .p-stat { font-size: 10px; color: var(--sub-text); font-family: sans-serif; }
+        .p-title { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .ctrls { display: flex; align-items: center; gap: 4px; }
+        .btn { background: none; border: none; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; fill: var(--text); }
+        .btn-play { background: var(--text); fill: #ffffff; }
+        svg { width: 18px; height: 18px; }
+
+        @media (max-width: 350px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+
+    <div class="app-bar">
+        <button class="back-btn" onclick="window.history.back()">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <h1>আসমাউল হুসনা</h1>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="player-wrap">
+        <div class="player">
+            <div class="p-info">
+                <span class="p-stat" id="pStat">Ready</span>
+                <span class="p-title" id="pTitle">Play to start</span>
+            </div>
+            <div class="ctrls">
+                <button class="btn" id="prevBtn"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+                <button class="btn btn-play" id="playBtn"><svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+                <button class="btn" id="nextBtn"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const audio = new Audio();
+        let idx = -1, isPlay = false, useFB = false;
+
+        // 99names_data.js থেকে namesData নিয়ে কার্ড তৈরি
+        namesData.forEach((n, i) => {
+            const el = document.createElement('div');
+            el.className = 'card';
+            el.id = `c-${i}`;
+            el.innerHTML = `<div class="num">${n.id}/99</div><div class="ar">${n.ar}</div><div class="bn">${n.bn}</div><div class="mean">${n.mean}</div>`;
+            el.onclick = () => play(i);
+            grid.appendChild(el);
+        });
+
+        // অডিও লিংক তৈরি
+        function getUrl(i, fb) {
+            return (fb ? ASMAUL_HUSNA_CONFIG.fallbackFolder : ASMAUL_HUSNA_CONFIG.mainAudioLink) + String(i + 1).padStart(2, '0') + ASMAUL_HUSNA_CONFIG.extension;
+        }
+
+        // অডিও প্লে ফাংশন
+        function play(i, retry = false) {
+            if(i < 0 || i > 98) return;
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            idx = i;
+            
+            audio.src = getUrl(i, retry || useFB);
+            document.getElementById('pStat').innerText = "Loading...";
+            
+            audio.play().then(() => {
+                isPlay = true; updIcn();
+                if (retry) useFB = true; 
+            }).catch(() => {
+                if (!retry && !useFB) play(i, true); 
+                else { document.getElementById('pStat').innerText = "Not Found"; isPlay = false; updIcn(); }
+            });
+
+            const c = document.getElementById(`c-${i}`);
+            c.classList.add('active');
+            document.getElementById('pStat').innerText = `Playing (${i + 1}/99)`;
+            document.getElementById('pTitle').innerText = namesData[i].bn;
+            c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.getElementById('playBtn').onclick = () => {
+            if (idx === -1) play(0);
+            else if (isPlay) { audio.pause(); isPlay = false; document.getElementById('pStat').innerText = "Paused"; }
+            else { audio.play(); isPlay = true; document.getElementById('pStat').innerText = `Playing (${idx + 1}/99)`; }
+            updIcn();
+        };
+
+        document.getElementById('nextBtn').onclick = () => { if (idx < 98) play(idx + 1); };
+        document.getElementById('prevBtn').onclick = () => { if (idx > 0) play(idx - 1); };
+
+        audio.onended = () => {
+            if (idx < 98) setTimeout(() => play(idx + 1), 500); 
+            else { isPlay = false; updIcn(); document.getElementById('pStat').innerText = "Finished"; document.querySelectorAll('.card').forEach(c => c.classList.remove('active')); idx = -1; }
+        };
+
+        function updIcn() {
+            document.getElementById('playIcon').innerHTML = isPlay ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' : '<path d="M8 5v14l11-7z"/>';
+        }
+    </script>
+</body>
+</html>
+
+
