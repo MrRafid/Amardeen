@@ -16,15 +16,23 @@
   {
     "type": "image",
     "active": true,
-    "title": "এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ(সাঃ) Playlist",
+    "title": "Playlist:এআই-ভিজ্যুয়ালাইজড সিরাহ সিরিজ - ইয়া রাসূলুল্লাহ(সাঃ)",
     "imageUrl": "https://i.ytimg.com/vi/DAORc0Moauk/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCgFM826IyNgjGN0JpjSN8uAICb8A",
     "link": "https://youtube.com/playlist?list=PLEdLmfVFySHk&si=DFI2hcOde7o99t-6"
+  },
+
+{
+    "type": "image",
+    "active": true,
+    "title": "Playlist:কিয়ামত দিবস সিরিজ",
+    "imageUrl": "https://i.ytimg.com/vi/4FXHRg1BYjw/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLARjR41hyIA1ZrczNiFC4JAbdm7cg",
+    "link": "https://youtube.com/playlist?list=PLGO_5dXp7Dog&si=Xh6iKMBs9mFWOCzP"
   },
 
   
   {
     "type": "image-grid",
-    "active": true,
+    "active": false,
     "images": [
       {
         "title": "গল্প ১ - ছবি",
