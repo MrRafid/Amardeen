@@ -18,19 +18,19 @@
     {
       "active": true,
       "name": "আল কুরআন",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/3382/3382436.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/ALQuran.png",
       "link": "quran.html"
     },
     {
       "active": true,
       "name": "কুরআন অনুবাদ",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/2083/2083162.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/ALQuran.png",
       "link": "quran-translation.html"
     },
     {
       "active": true,
       "name": "হাদিস",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/2723/2723826.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/Hadith.png",
       "link": "hadith.html"
     },
     {
@@ -43,31 +43,31 @@
     {
       "active": true,
       "name": "তাসবীহ",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/8207/8207908.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/DigitalTasbeeh.png",
       "link": "tasbeeh.html"
     },
     {
       "active": true,
       "name": "মক্কা মদিনা",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/7594/7594612.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/Livemecca.png",
       "link": "makkah-madinah.html"
     },
     {
       "active": true,
       "name": "নামাজ শিক্ষা",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/7762/7762141.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/Livemecca.png",
       "link": "namaz-shikha.html"
     },
     {
       "active": true,
       "name": "দোয়া",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/8157/8157849.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dua/icons/Services/Dua.png",
       "link": "dua.html"
     },
     {
       "active": true,
       "name": "নবীজীদের জীবন",
-      "iconUrl": "https://cdn-icons-png.flaticon.com/512/2375/2375371.png",
+      "iconUrl": "https://islamic-content.sgp1.digitaloceanspaces.com/Content/Dashboard/logo/prophetlife.png",
       "link": "prophets.html"
     },
     {
